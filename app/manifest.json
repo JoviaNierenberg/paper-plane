@@ -16,17 +16,18 @@
     "default_title": "paperplane"
     // "default_popup": "popup.html"
   },
-  "permissions": [
-    "webRequest",
-    "debugger",
-    "unlimitedStorage",
-    "https://*/*",
-    "http://*/*",
-  ],
+  // "permissions": [
+  //   "webRequest",
+  //   "debugger",
+  //   "unlimitedStorage",
+  //   "https://*/*",
+  //   "http://*/*",
+  // ],
   "background": {
-    "page": "background/background.html",
-    "persistant" : true
-  }
+    "scripts": ["scripts/background.js"]
+    // "page": "background/background.html",
+    // "persistant" : true
+  },
   "content_scripts": [
     {
       "matches": [
