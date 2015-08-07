@@ -30,7 +30,7 @@
         "bower_components/angular/angular.min.js",
         "scripts/contentscript.js"
       ],
-      "html": ["/templates/overlay.html"],
+      "html": ["./templates/overlay.html"],
       "run_at": "document_end",
       "all_frames": false
     }
@@ -38,6 +38,6 @@
   "content_security_policy": "script-src 'self'; 'unsafe-eval'; object-src 'self'",
   "web_accessible_resources" : [
     "bower_components/angular/*",
-    "/templates/overlay.html"
+    "./templates/overlay.html"
   ]
 }
