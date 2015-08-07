@@ -20,19 +20,20 @@ chrome.runtime.onMessage.addListener(
 		overlay = overlay.getElementsByTagName("div")[0];
 		console.log("overlay: ", overlay);
 		overlay.setAttribute('ng-controller', 'MainCtrl');
-		app.controller('MainCtrl', function($scope) {
-			// if (typeof localStorage.highlighting === 'undefined') {
-		 //        localStorage.highlighting = false;
-		 //    }
-		 //    $scope.selMode = localStorage.highlighting;
-		 //    $scope.highlight= function(bool) {
-		 //        var select;
-		 //        $scope.selMode = bool.toString();
-		 //        localStorage.highlighting = bool;
-		 //        if (bool) select = 'select-on';
-		 //        else select = 'select-off';
-		 //        chrome.runtime.sendMessage({command: select});
-		 //    }
+		
+    app.controller('MainCtrl', function($scope) {
+
+      // $scope.highlight = function(){
+
+      //     document.designMode = "on";
+
+      //     document.body.spellcheck = false;
+
+      //     document.execCommand('HiliteColor', false, "yellow");
+
+      //     document.designMode = "off";
+      // }
+
 		});
 
 		var overlayDirective = document.createElement('div');
@@ -71,35 +72,31 @@ chrome.runtime.onMessage.addListener(
     } 	
 });
 
-// highlight and copy
-// $(document).ready(function () {
-// 	console.log("document is ready, content script logging!");
-// 	var startSelect;
-// 	chrome.runtime.sendMessage({getHighlightStatus: true}, function(response) {
-// 		startSelect = response.highlighting;
-// 		console.log("startSelect inside chrome response", startSelect)
-// 	});
+var range, selected;
+var aPage = {
+    highlighted: []
+}
+//highlight and copy
+$(document).on("click", function (v) {
+    var elem = document.elementFromPoint(v.clientX, v.clientY);
+    var found = false;
 
-// 	function highlight(colour) {  
-// 	    if (selected.rangeCount && selected.getRangeAt) {
-// 	        range = selected.getRangeAt(0);
-// 	    }
-// 	    document.designMode = "on";   
-// 	    document.body.spellcheck = false;
-// 	    if (range) {
-// 	        selected.removeAllRanges();
-// 	        selected.addRange(range);
-// 	    } 
-// 	    if (!document.execCommand("HiliteColor", false, colour)) {
-// 	        document.execCommand("BackColor", false, colour);
-// 	    }
-// 	    document.designMode = "off";
-// 	}
-// 	if (startSelect === "true" || startSelect === true){
-// 		highlight("#fcc");
-// 	}
-// });
+    while (elem.parentNode) {
+      if (elem.tagName.toLowerCase() === "a" || elem.tagName.toLowerCase() === "input" || elem.tagName.toLowerCase() === "textarea" || elem.tagName.toLowerCase() === "select") found = true;
+      elem = elem.parentNode;
+    }
 
+
+    // if (!found && (startSelect === "true" || startSelect === true)) {
+      range, selected = window.getSelection();
+      var selectedText = selected.toString();
+         
+        aPage.title = document.title;
+        aPage.url = document.location.href;
+        if (selectedText.trim() !== "") aPage.highlighted.push(selectedText);
+        console.log('a page', aPage);
+    // }
+});
 
 
 console.log('\'Allo \'Allo! Content script');
