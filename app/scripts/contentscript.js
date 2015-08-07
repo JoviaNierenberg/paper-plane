@@ -7,7 +7,8 @@ window.addEventListener("load", function(){
 	html.setAttribute('ng-app', '');
 	html.setAttribute('ng-csp', '');
 
-	var overlay = document.getElementById("body");
+	var overlay = document.getElementsByTagName("body")[0];
+	console.log("overlay: ", overlay);
 	overlay.setAttribute('ng-controller', 'MainCtrl');
 	app.controller('MainCtrl', function($scope) {});
 
@@ -18,8 +19,8 @@ window.addEventListener("load", function(){
 	app.directive("overlayDirective", [ "$sce", function($sce){
 		return {
 			restrict: 'EA',
-			replace: true,
-			template: "<div>Hello</div>"//$sce.trustAsResourceUrl(chrome.extension.getURL('.././templates/overlay.html'))
+			// replace: true,
+			templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/overlay.html'))
 		}
 	}]);
 
