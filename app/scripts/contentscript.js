@@ -1,5 +1,37 @@
 'use strict';
 
+var app = angular.module("PaperPlane", []);
+app.controller('MainCtrl', function($scope) {
+
+    $scope.range;
+    $scope.selected;
+
+    $scope.aPage = {
+       highlighted: []
+    }
+    $(document).on("click", function (v) {
+    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
+    $scope.found = false;
+
+    while ($scope.elem.parentNode) {
+      if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
+      $scope.elem = $scope.elem.parentNode;
+    }
+
+      $scope.range, $scope.selected = window.getSelection();
+      $scope.selectedText = $scope.selected.toString();
+         
+        $scope.aPage.title = document.title;
+        $scope.aPage.url = document.location.href;
+        if ($scope.selectedText.trim() !== "") {
+          $scope.aPage.highlighted.push($scope.selectedText);
+          $scope.$digest();
+        }
+        console.log('a page', $scope.aPage);
+    });
+
+});
+
 
 // bootstrapping, opening, and closing overlay
 chrome.runtime.onMessage.addListener(
@@ -10,7 +42,6 @@ chrome.runtime.onMessage.addListener(
     // create overlay on page the first time extension button is clicked
     if (request.takeOff === true){
     
-    	var app = angular.module("PaperPlane", []);
 
 		var html = document.querySelector('html');
 		html.setAttribute('ng-app', '');
@@ -20,20 +51,7 @@ chrome.runtime.onMessage.addListener(
 		overlay = overlay.getElementsByTagName("div")[0];
 		console.log("overlay: ", overlay);
 		overlay.setAttribute('ng-controller', 'MainCtrl');
-		app.controller('MainCtrl', function($scope) {
-			// if (typeof localStorage.highlighting === 'undefined') {
-		 //        localStorage.highlighting = false;
-		 //    }
-		 //    $scope.selMode = localStorage.highlighting;
-		 //    $scope.highlight= function(bool) {
-		 //        var select;
-		 //        $scope.selMode = bool.toString();
-		 //        localStorage.highlighting = bool;
-		 //        if (bool) select = 'select-on';
-		 //        else select = 'select-off';
-		 //        chrome.runtime.sendMessage({command: select});
-		 //    }
-		});
+		
 
 		var overlayDirective = document.createElement('div');
 		overlayDirective.setAttribute('overlay-directive', '');
@@ -70,37 +88,6 @@ chrome.runtime.onMessage.addListener(
     	overlayToggle.setAttribute('class', 'ng-show');
     } 	
 });
-
-// highlight and copy
-// $(document).ready(function () {
-// 	console.log("document is ready, content script logging!");
-// 	var startSelect;
-// 	chrome.runtime.sendMessage({getHighlightStatus: true}, function(response) {
-// 		startSelect = response.highlighting;
-// 		console.log("startSelect inside chrome response", startSelect)
-// 	});
-
-// 	function highlight(colour) {  
-// 	    if (selected.rangeCount && selected.getRangeAt) {
-// 	        range = selected.getRangeAt(0);
-// 	    }
-// 	    document.designMode = "on";   
-// 	    document.body.spellcheck = false;
-// 	    if (range) {
-// 	        selected.removeAllRanges();
-// 	        selected.addRange(range);
-// 	    } 
-// 	    if (!document.execCommand("HiliteColor", false, colour)) {
-// 	        document.execCommand("BackColor", false, colour);
-// 	    }
-// 	    document.designMode = "off";
-// 	}
-// 	if (startSelect === "true" || startSelect === true){
-// 		highlight("#fcc");
-// 	}
-// });
-
-
 
 console.log('\'Allo \'Allo! Content script');
 
