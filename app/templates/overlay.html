@@ -17,61 +17,11 @@
         <option value="chicagob">Chicago</option>
         <option value="apa">APA</option>
       </select>
-      <div>
-        <p> Highlight the author </p> 
-        <p>{{aPage.highlighted}}</p>
-      </div>
-      <div> 
-        <p>Highlight the editor</p>
-        <p>{{aPage.highlighted}}</p>
-      </div>
-       <div> 
-        <p>Highlight the title</p>
-        <p>{{aPage.highlighted}}</p>
-      </div>
-      <div> 
-        <p>Highlight the journal title</p>
-        <p>{{aPage.highlighted}}</p>
-      </div>
-      <div> 
-        <p>Highlight the publisher</p>
-        <p>{{aPage.highlighted}}</p>
-      </div>
-      <div> 
-        <p>Highlight the date written</p>
-        <p>{{aPage.highlighted}}</p>
-      </div>
-      <div> 
-        <p>If Journal, Highlight Journal Volume</p>
-        <p>{{aPage.highlighted}}</p>
+      <p>{{highlighted}}</p>
+      <div ng-hide="categories.length === 0">
+        <p> Highlight the {{categories[0]}} </p> 
       </div>
       <input ng-model="citation.pages" placeholder="pages ex. 99-100">
       </input>
-      <!-- <input ng-model="citation.authors" placeholder="Author's Names separated by comma">
-      </input> -->
-     <!--  </input>
-      <input ng-model="citation.editorName" placeholder="Editor's Names separated by comma">
-      </input>
-      <input ng-model="citation.title" placeholder="title">
-      </input>
-      <input ng-model="citation.journalTitle" placeholder=" if journal enter journal title">
-      </input>
-      <input ng-model="citation.publisher" placeholder="publisher">
-      </input>
-      <input ng-model="citation.city" placeholder="city">
-      </input>
-      <input ng-model="citation.year" placeholder="year">
-      </input>
-      <input ng-model="citation.dateWritten" placeholder="Date Created Ex. May 4 1990">
-      </input>
-      </input>
-      <input ng-model="citation.pages" placeholder="pages ex. 99-100">
-      </input>
-      <input ng-model="citation.volume" placeholder="If Journal, Enter volume">
-      </input> -->
-      <!-- <div>
-        <p>{{citation}}</p>
-      </div> -->
-      <!-- <button ng-click="highlight()">Start Highlight</button> -->
       <button ng-click="createCitation(citation)">Create my citation</button>
 </div>

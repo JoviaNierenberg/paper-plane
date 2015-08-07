@@ -6,30 +6,34 @@ app.controller('MainCtrl', function($scope) {
     $scope.range;
     $scope.selected;
 
-    $scope.aPage = {
-       highlighted: []
-    }
-    $(document).on("click", function (v) {
-    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
-    $scope.found = false;
+    $scope.highlighted = {};
+    $scope.categories = ["author", "editor", "content title", "journal title", "publisher", "date", "journal volume"]
+    
 
-    while ($scope.elem.parentNode) {
-      if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
-      $scope.elem = $scope.elem.parentNode;
-    }
+    	$(document).on("click", function (v) {
+    		console.log("categories length: ", $scope.categories.length)
+    		if ($scope.categories.length > 0){
+		    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
+		    $scope.found = false;
 
-      $scope.range, $scope.selected = window.getSelection();
-      $scope.selectedText = $scope.selected.toString();
-         
-        $scope.aPage.title = document.title;
-        $scope.aPage.url = document.location.href;
-        if ($scope.selectedText.trim() !== "") {
-          $scope.aPage.highlighted.push($scope.selectedText);
-          $scope.$digest();
-        }
-        console.log('a page', $scope.aPage);
+		    while ($scope.elem.parentNode) {
+		      if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
+			      $scope.elem = $scope.elem.parentNode;
+			    }
+		    
+			$scope.range, $scope.selected = window.getSelection();
+			$scope.selectedText = $scope.selected.toString();    
+	        if ($scope.selectedText.trim() !== "") {
+				$scope.highlighted[$scope.categories.shift()] = $scope.selectedText;
+				console.log("$scope.categories: ", $scope.categories)
+				$scope.$digest();
+	        }
+			console.log('a page', $scope.highlighted);
+	    }
     });
-
+    
+    $scope.highlighted.title = document.title;
+	$scope.highlighted.url = document.location.href;
 });
 
 
