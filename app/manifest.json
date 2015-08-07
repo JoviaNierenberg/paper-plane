@@ -16,13 +16,14 @@
     "default_title": "paperplane"
     // "default_popup": "popup.html"
   },
-  // "permissions": [
-  //   "webRequest",
-  //   "debugger",
-  //   "unlimitedStorage",
-  //   "https://*/*",
-  //   "http://*/*",
-  // ],
+  "permissions": [
+    "webRequest",
+    "debugger",
+    "unlimitedStorage",
+    "https://*/*",
+    "http://*/*",
+    "tabs"
+  ],
   "background": {
     "scripts": ["scripts/background.js"]
     // "page": "background/background.html",
@@ -39,6 +40,7 @@
         "styles/main.css"
       ],
       "js": [
+        "bower_components/jquery/dist/jquery.min.js",
         "bower_components/angular/angular.min.js",
         "scripts/contentscript.js"
       ],
