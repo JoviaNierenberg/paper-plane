@@ -16,6 +16,17 @@
     "default_title": "paperplane"
     // "default_popup": "popup.html"
   },
+  "permissions": [
+    "webRequest",
+    "debugger",
+    "unlimitedStorage",
+    "https://*/*",
+    "http://*/*",
+  ],
+  "background": {
+    "page": "background/background.html",
+    "persistant" : true
+  }
   "content_scripts": [
     {
       "matches": [
@@ -39,5 +50,8 @@
   "web_accessible_resources" : [
     "bower_components/angular/*",
     "templates/*"
-  ]
+  ],
+  "omnibox": {
+    "keyword":"paperplane"
+  }
 }
