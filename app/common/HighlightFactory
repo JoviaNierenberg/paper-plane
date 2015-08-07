@@ -1,0 +1,25 @@
+app.factory('HighlightFactory', function(){
+  return{
+    getHighlightedText: function(){
+    //   $(document).on("click", function (v) {
+    //     var elem = document.elementFromPoint(v.clientX, v.clientY);
+    //     var found = false;
+
+    //     while (elem.parentNode) {
+    //       if (elem.tagName.toLowerCase() === "a" || elem.tagName.toLowerCase() === "input" || elem.tagName.toLowerCase() === "textarea" || elem.tagName.toLowerCase() === "select") found = true;
+    //       elem = elem.parentNode;
+    //     }
+
+    //     // if (!found && (startSelect === "true" || startSelect === true)) {
+    //       range, selected = window.getSelection();
+    //       var selectedText = selected.toString();
+             
+    //         aPage.title = document.title;
+    //         aPage.url = document.location.href;
+    //         if (selectedText.trim() !== "") aPage.highlighted.push(selectedText);
+    //         console.log('a page', aPage);
+    //     // }
+    // });
+    // }
+  }
+})

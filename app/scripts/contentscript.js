@@ -1,5 +1,34 @@
 'use strict';
 
+var app = angular.module("PaperPlane", []);
+app.controller('MainCtrl', function($scope) {
+
+    $scope.range;
+    $scope.selected;
+
+    $scope.aPage = {
+       highlighted: []
+    }
+    $(document).on("click", function (v) {
+    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
+    $scope.found = false;
+
+    while ($scope.elem.parentNode) {
+      if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
+      $scope.elem = $scope.elem.parentNode;
+    }
+
+      $scope.range, $scope.selected = window.getSelection();
+      $scope.selectedText = $scope.selected.toString();
+         
+        $scope.aPage.title = document.title;
+        $scope.aPage.url = document.location.href;
+        if ($scope.selectedText.trim() !== "") $scope.aPage.highlighted.push($scope.selectedText);
+        console.log('a page', $scope.aPage);
+    });
+
+});
+
 
 // bootstrapping, opening, and closing overlay
 chrome.runtime.onMessage.addListener(
@@ -10,7 +39,6 @@ chrome.runtime.onMessage.addListener(
     // create overlay on page the first time extension button is clicked
     if (request.takeOff === true){
     
-    	var app = angular.module("PaperPlane", []);
 
 		var html = document.querySelector('html');
 		html.setAttribute('ng-app', '');
@@ -21,20 +49,6 @@ chrome.runtime.onMessage.addListener(
 		console.log("overlay: ", overlay);
 		overlay.setAttribute('ng-controller', 'MainCtrl');
 		
-    app.controller('MainCtrl', function($scope) {
-
-      // $scope.highlight = function(){
-
-      //     document.designMode = "on";
-
-      //     document.body.spellcheck = false;
-
-      //     document.execCommand('HiliteColor', false, "yellow");
-
-      //     document.designMode = "off";
-      // }
-
-		});
 
 		var overlayDirective = document.createElement('div');
 		overlayDirective.setAttribute('overlay-directive', '');
@@ -71,33 +85,6 @@ chrome.runtime.onMessage.addListener(
     	overlayToggle.setAttribute('class', 'ng-show');
     } 	
 });
-
-var range, selected;
-var aPage = {
-    highlighted: []
-}
-//highlight and copy
-$(document).on("click", function (v) {
-    var elem = document.elementFromPoint(v.clientX, v.clientY);
-    var found = false;
-
-    while (elem.parentNode) {
-      if (elem.tagName.toLowerCase() === "a" || elem.tagName.toLowerCase() === "input" || elem.tagName.toLowerCase() === "textarea" || elem.tagName.toLowerCase() === "select") found = true;
-      elem = elem.parentNode;
-    }
-
-
-    // if (!found && (startSelect === "true" || startSelect === true)) {
-      range, selected = window.getSelection();
-      var selectedText = selected.toString();
-         
-        aPage.title = document.title;
-        aPage.url = document.location.href;
-        if (selectedText.trim() !== "") aPage.highlighted.push(selectedText);
-        console.log('a page', aPage);
-    // }
-});
-
 
 console.log('\'Allo \'Allo! Content script');
 
