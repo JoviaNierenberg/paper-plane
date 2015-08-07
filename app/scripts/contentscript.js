@@ -18,6 +18,12 @@ window.addEventListener("load", function(){
 	overlayDirective.setAttribute('overlay-directive', '');
 	document.body.appendChild(overlayDirective);
 
+	app.controller('citationCtrl', function($scope){
+		$scope.createCitation = function(citationInfo){
+
+		};
+	})
+
 	app.directive("overlayDirective", [ "$sce", function($sce){
 		return {
 			restrict: 'EA',
