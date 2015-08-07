@@ -23,7 +23,10 @@ app.controller('MainCtrl', function($scope) {
          
         $scope.aPage.title = document.title;
         $scope.aPage.url = document.location.href;
-        if ($scope.selectedText.trim() !== "") $scope.aPage.highlighted.push($scope.selectedText);
+        if ($scope.selectedText.trim() !== "") {
+          $scope.aPage.highlighted.push($scope.selectedText);
+          $scope.$digest();
+        }
         console.log('a page', $scope.aPage);
     });
 
