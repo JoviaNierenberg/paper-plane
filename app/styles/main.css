@@ -1,3 +1,20 @@
 body {
   padding: 20px;
 }
+
+.text{
+  color: white;
+}
+
+#paperPlane{
+   background-color: #6371B7;
+   position: absolute; 
+   width: 20%;
+   height: 30%;
+   top: 50px;
+   right: 5px;
+   padding: 0px 20px 20px 20px;
+}
+
+
+

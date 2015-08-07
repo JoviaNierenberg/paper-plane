@@ -8,13 +8,15 @@ window.addEventListener("load", function(){
 	html.setAttribute('ng-csp', '');
 
 	var overlay = document.getElementsByTagName("body")[0];
+	overlay = overlay.getElementsByTagName("div")[0];
 	console.log("overlay: ", overlay);
 	overlay.setAttribute('ng-controller', 'MainCtrl');
-	app.controller('MainCtrl', function($scope) {});
+	app.controller('MainCtrl', function($scope) {
+	});
 
 	var overlayDirective = document.createElement('div');
 	overlayDirective.setAttribute('overlay-directive', '');
-	overlay.appendChild(overlayDirective);
+	document.body.appendChild(overlayDirective);
 
 	app.directive("overlayDirective", [ "$sce", function($sce){
 		return {
