@@ -5,7 +5,9 @@ chrome.runtime.onMessage.addListener(
     console.log(sender.tab ?
                 "from a content script:" + sender.tab.url :
                 "from the extension");
+    // create overlay on page the first time extension button is clicked
     if (request.takeOff === true){
+    
     	var app = angular.module("PaperPlane", []);
 
 		var html = document.querySelector('html');
@@ -39,11 +41,15 @@ chrome.runtime.onMessage.addListener(
 
 		angular.bootstrap(html, ['PaperPlane'], []);
     } 
+
+    // hide overlay from page when extension button is toggled
     else if (request.open === false) {
     	var overlayToggle = document.getElementById('newDiv');
     	console.log("overlayToggle: ", overlayToggle)
     	overlayToggle.setAttribute('class', 'ng-hide');
     }
+
+    // shows overlay from page when extension button is toggled
     else if (request.open === true) {
     	var overlayToggle = document.getElementById('newDiv');
     	console.log("overlayToggle open: ", overlayToggle)
