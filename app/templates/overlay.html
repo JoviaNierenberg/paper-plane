@@ -1,0 +1,56 @@
+<!doctype html>
+<html data-ng-app="PaperPlane" data-ng-csp="">
+  <head>
+    <title>Paper Plane</title>
+  </head>
+  <body>
+    <h1>Paper Plane</h1>
+    <div ng-controller="MainCtrl">
+      <select ng-model="citation.source">
+        <option value=''> Source </option>
+        <option placeholder="source" value="mla7">Website</option>
+        <option value="chicagob">Book</option>
+        <option value="apa">Journal</option>
+        <option value="apa">Chapter</option>
+        <option value="apa">Magazine</option>
+        <option value="apa">Newspaper</option>
+      </select>
+      <select ng-model="citation.style">
+        <option value=''> Style </option>
+        <option value="mla7">MLA</option>
+        <option value="chicagob">Chicago</option>
+        <option value="apa">APA</option>
+      </select>
+      <input ng-model="citation.authors" placeholder="Author's Names separated by comma">
+      </input>
+      </input>
+      <input ng-model="citation.editorName" placeholder="Editor's Names separated by comma">
+      </input>
+      <input ng-model="citation.title" placeholder="title">
+      </input>
+      <input ng-model="citation.journalTitle" placeholder=" if journal enter journal title">
+      </input>
+      <input ng-model="citation.publisher" placeholder="publisher">
+      </input>
+      <input ng-model="citation.city" placeholder="city">
+      </input>
+      <input ng-model="citation.year" placeholder="year">
+      </input>
+      <input ng-model="citation.dateWritten" placeholder="Date Created Ex. May 4 1990">
+      </input>
+      </input>
+      <input ng-model="citation.pages" placeholder="pages ex. 99-100">
+      </input>
+      <input ng-model="citation.volume" placeholder="If Journal, Enter volume">
+      </input>
+      <div>
+        <p>{{citation}}</p>
+      </div>
+      <button ng-click="createCitation(citation)">Create my citation</button>
+    </div>
+    <script src="../../../../node_modules/angular/angular.min.js"></script>
+    <script src="../../../../node_modules/angular-ui-router/build/angular-ui-router.min.js"></script>
+    <script src="./popup.js"></script>
+     <script src="../../../../node_modules/angular-bootstrap/ui-bootstrap.min.js"></script>
+  </body>
+</html>

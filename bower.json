@@ -1,7 +1,9 @@
 {
   "name": "paperplane",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "angular": "~1.4.3"
+  },
   "devDependencies": {
     "chai": "~3.2.0",
     "mocha": "~2.2.5"

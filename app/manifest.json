@@ -4,23 +4,17 @@
   "manifest_version": 2,
   "description": "__MSG_appDescription__",
   "icons": {
-    "16": "images/icon-16.png",
-    "128": "images/icon-128.png"
+    "16": "images/purple-airplane.png",
+    "128": "images/purple-airplane.png"
   },
   "default_locale": "en",
-  "background": {
-    "scripts": [
-      "scripts/chromereload.js",
-      "scripts/background.js"
-    ]
-  },
   "browser_action": {
     "default_icon": {
-      "19": "images/icon-19.png",
-      "38": "images/icon-38.png"
+      "19": "images/purple-airplane.png",
+      "38": "images/purple-airplane.png"
     },
-    "default_title": "paperplane",
-    "default_popup": "popup.html"
+    "default_title": "paperplane"
+    // "default_popup": "popup.html"
   },
   "content_scripts": [
     {
@@ -28,11 +22,22 @@
         "http://*/*",
         "https://*/*"
       ],
+      "css": [
+        "bower_components/angular/angular-csp.css",
+        "styles/main.css"
+      ],
       "js": [
+        "bower_components/angular/angular.min.js",
         "scripts/contentscript.js"
       ],
+      "html": ["/templates/overlay.html"],
       "run_at": "document_end",
       "all_frames": false
     }
+  ],
+  "content_security_policy": "script-src 'self'; 'unsafe-eval'; object-src 'self'",
+  "web_accessible_resources" : [
+    "bower_components/angular/*",
+    "/templates/overlay.html"
   ]
 }
