@@ -1,24 +1,14 @@
 
  <div id="paperPlane" ng-model="citation" ng-controller="MainCtrl">
-     <link rel=stylesheet type="text/css" href="../styles/main.css">
+     <link rel=stylesheet type="text/css">
       <div class="title">Paper Plane
         <img class="planeicon" src="http://www.childrenandyouth.co.uk/wp-content/uploads/2014/08/Paper-Aeroplane.png" height="20%" width="20%">
         <hr>
       </div>
     <form name="citationForm" ng-submit="createCitation(citation)">
-     <div>
-     <!--  <select ng-change="sourceSelected(source)" ng-model="source" ng-required="true">
+      <p>1. Choose source and style</p><select ng-change="sourceSelected(source)" ng-model="source" ng-required="true">
         <option value=''> Source* </option>
-        <option ng-repeat="source in sourceCategories" value={{source.Name}}>{{source.Name}}</option>
-      </select> -->
-      <select ng-model="citation.source" ng-required="true">
-        <option value=''> Source* </option>
-        <option placeholder="source" value="website">Website</option>
-        <option value="book">Book</option>
-        <option value="journal">Journal</option>
-        <option value="chapter">Chapter</option>
-        <option value="magazine">Magazine</option>
-        <option value="newspaper">Newspaper</option>
+        <option ng-repeat="(key, value) in sourceCategories" value={{key}}>{{key}}</option>
       </select>
       <select ng-model="citation.style" ng-required="true">
         <option value=''> Style* </option>
@@ -26,13 +16,13 @@
         <option value="chicagob">Chicago</option>
         <option value="apa">APA</option>
       </select>
-      <div class="displayHighlight"ng-repeat="(key, value) in highlighted">
-        <b>{{key}} <b>: {{value}}
+      <div class="displayHighlight"ng-repeat="(key, value) in highlighted" ng-hide="citationForm.$invalid">
+        <b>{{key}}:</b> {{value}}
       </div>
-      <div ng-hide="categories.length === 0">
-        <p> Highlight the {{categories[0]}} </p> 
+      <div ng-hide="sourceCategories[source].length === 0">
+        <p ng-hide="citationForm.$invalid">2.  Highlight the {{sourceCategories[source][0]}} </p> 
       </div>
-      <input ng-model="citation.pages" placeholder="pages ex. 99-100">
+      <input ng-model="citation.pages" placeholder="pages ex. 99-100" ng-hide="citationForm.$invalid">
       </input>
       <div class="citationBtn">
       <input type="submit" value="create my citation" ng-hide="citationForm.$invalid" ></input>
