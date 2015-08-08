@@ -29,4 +29,9 @@
       </div>
       <div ng-show="citationForm.$invalid" ng-show="citationForm.$pristine" class="formError">* fields are required to create citation</div>
     </form>
+    <form name="allCitations" ng-submit="copyCitations()">
+      <div class="citationBtn">
+       <input type="submit" value="Copy Citations to Clipboard"></input>
+      </div>
+    </form>
 </div>
