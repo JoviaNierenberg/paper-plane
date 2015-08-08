@@ -2,7 +2,8 @@
   "name": "paperplane",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "~1.4.3"
+    "angular": "~1.4.3",
+    "lodash": "~3.10.1"
   },
   "devDependencies": {
     "chai": "~3.2.0",
