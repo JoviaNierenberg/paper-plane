@@ -2,23 +2,27 @@ body {
   padding: 20px;
 }
 
-.text{
-  padding: 10px 0px 10px 0px;
-  color: white;
-}
-
 #paperPlane{
    /*background-image: url("http://previews.123rf.com/images/photoauris/photoauris1110/photoauris111000004/11011469-high-resolution-seamless-cork-texture-Stock-Photo-wood.jpg");*/
-   background-color: #6371B7;
+   background-color: #2F373D;
+   border: 1px solid #8599A7;
    position: absolute; 
-   overflow: hidden;
+   overflow-x: hidden;
+   overflow-y: auto;
    width: 200px;
    height: 600px;
    top: 50px;
    right: 5px;
+   margin-top: 80px;
    padding: 0px 20px 20px 20px;
+   color: #8599A7;
 }
 
+.title{
+  font-size: 20px;
+  padding: 10px 0px 10px 0px;
+  color: white;
+}
 .displayHighlight{
   color: white;
   font-size: 70%;
@@ -26,7 +30,12 @@ body {
 }
 
 
-.btn{
+.citationBtn{
   margin-top: 10px;
   padding: 10px;
+}
+
+.planeicon{
+  float: right;
+  padding-bottom: 5px;
 }
