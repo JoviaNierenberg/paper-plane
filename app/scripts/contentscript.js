@@ -7,7 +7,7 @@ app.controller('MainCtrl', function($scope) {
     $scope.selected;
 
     $scope.highlighted = {};
-    $scope.categories = ["author", "editor", "content title", "journal title", "publisher", "date", "journal volume"]
+    $scope.categories = ["author(s)", "editor", "content title", "journal title", "publisher", "date", "journal volume"]
     
 
     	$(document).on("click", function (v) {
@@ -34,6 +34,7 @@ app.controller('MainCtrl', function($scope) {
     
     $scope.highlighted.title = document.title;
 	$scope.highlighted.url = document.location.href;
+  $scope.dateAccessed = new Date();
 });
 
 
