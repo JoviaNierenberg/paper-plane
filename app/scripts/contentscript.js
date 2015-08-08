@@ -6,12 +6,37 @@ app.controller('MainCtrl', function($scope) {
 // getting data into categories
     $scope.range;
     $scope.selected;
-
     $scope.highlighted = {};
+
+    // sources
+    $scope.sourceCategories = [
+      {Name: "website"},
+      {Name: "book"},
+      {Name: "journal"},
+      {Name: "chapter"},
+      {Name: "magazine"},
+      {Name: "newspaper"}
+    ]
+    // set source
+    $scope.sourceSelected = function(source){
+      console.log("source as entered function: ", source)
+      $scope.source = source;
+      console.log("$scope.source", $scope.source)
+    }
+
+    // categories to show based on source
+    $scope.bookCategories = ["book title", "publisher name", "city published", "state published", "volume", "edition", "year published"]; // pages needs to include start, end, and non-consecutive
+    $scope.chapterCategories = ["chapter title", "book title", "publisher name", "city published", "state published", "volume", "edition", "year published"]; // pages needs to include start, end, and non-consecutive
+    $scope.magazineCategories = ["article title", "magazine title", "volume", "publication date"]; // pages needs to include start, end, and non-consecutive
+    $scope.newspaperCategories = ["article title", "newspaper title", "edition (late, etc.)", "newspaper section", "city published", "publication date"]; // pages needs to include start, end, and non-consecutive
+    $scope.journalCategories = ["article title", "journal title", "journal issue", "journal volume", "journal series", "date published"]; // pages needs to include start, end, and non-consecutive. checkbox for if journal restarts page numbering.
+    $scope.onlineCategories = ["article title", "website title", "institution", "date published"];
+
+
+
     $scope.categories = ["author(s)", "editor", "contentTitle", "journalTitle", "publisher", "date", "journalVolume"]
     
   	$(document).on("click", function (v) {
-  		// console.log("categories length: ", $scope.categories.length)
   		if ($scope.categories.length > 0){
   	    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
   	    $scope.found = false;
@@ -24,6 +49,7 @@ app.controller('MainCtrl', function($scope) {
     		$scope.range, $scope.selected = window.getSelection();
     		$scope.selectedText = $scope.selected.toString();    
         if ($scope.selectedText.trim() !== "") {
+          // display correct category
     			$scope.highlighted[$scope.categories.shift()] = $scope.selectedText;
     			$scope.$digest();
         }
@@ -35,28 +61,44 @@ app.controller('MainCtrl', function($scope) {
   $scope.dateAccessed = new Date();
   $scope.apiKey = {key: '5d2fbb2fed6b4aacfc0a329b490cb23d'};
 
-  // testing variables
-  // $scope.sourceInfo = {
-  //   website: {
-  //     title : "puppies"
-  //   },
-  //   pubtype: {
-  //     main: "pubonline"
-  //   },
-  //   pubonline: {
-  //     title: $scope.highlighted.contentTitle,
-  //     inst: "Organization that owns web site",
-  //     day: "6",
-  //     month: "january",
-  //     year: "2001",
-  //     dayaccessed: "8",
-  //     monthaccessed: "march",
-  //     yearaccessed: "2007",
-  //   }
-  // }
+
 
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
+    //set pubtype
+    var pubtype;
+    if (citationInfo.source === "book" || citationInfo.source === "chapter") pubtype = "pubnonperiodical";
+    else if (citationInfo.source === "magazine") pubtype = "pubmagazine";
+    else if (citationInfo.source === "newspaper") pubtype = "pubnewspaper";
+    else if (citationInfo.source === "journal") pubtype = "pubjournal";
+    else if (citationInfo.source === "website") pubtype = "pubonline";
+    // testing variables
+    $scope.sourceInfo = {
+      [citationInfo.source]: { // need make this any citation source, not just websites
+        title : $scope.highlighted.contentTitle
+      },
+      pubtype: {
+        main: pubtype
+      },
+      [pubtype]: {
+        title: $scope.highlighted.contentTitle,
+        inst: "Organization that owns web site",
+        day: "6",
+        month: "january",
+        year: "2001",
+        dayaccessed: "8",
+        monthaccessed: "march",
+        yearaccessed: "2007",
+      },
+      contributors: [
+        {
+          function: "author",
+          first: "Luke",
+          middle: "A",
+          last: "Skywalker"
+        }
+      ]   
+    }
     console.log('citationInfo', citationInfo);
     $scope.infoToPut = JSON.stringify(_.assign( $scope.apiKey, citationInfo, $scope.sourceInfo, $scope.highlighted));
     console.log('$scope.InfoToPut', $scope.infoToPut);
