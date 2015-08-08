@@ -2,17 +2,18 @@
  <div id="paperPlane" ng-model="citation" ng-controller="MainCtrl">
      <link rel=stylesheet type="text/css" href="../styles/main.css">
       <div class="text"><h1>Paper Plane</h1></div>
-      <select ng-model="citation.source">
-        <option value=''> Source </option>
-        <option placeholder="source" value="mla7">Website</option>
-        <option value="chicagob">Book</option>
-        <option value="apa">Journal</option>
-        <option value="apa">Chapter</option>
-        <option value="apa">Magazine</option>
-        <option value="apa">Newspaper</option>
+    <form name="citationForm" ng-submit="createCitation(citation)">
+      <select ng-model="citation.source" ng-required="true">
+        <option value=''> Source* </option>
+        <option placeholder="source" value="website">Website</option>
+        <option value="book">Book</option>
+        <option value="journal">Journal</option>
+        <option value="chapter">Chapter</option>
+        <option value="magazine">Magazine</option>
+        <option value="newspaper">Newspaper</option>
       </select>
-      <select ng-model="citation.style">
-        <option value=''> Style </option>
+      <select ng-model="citation.style" ng-required="true">
+        <option value=''> Style* </option>
         <option value="mla7">MLA</option>
         <option value="chicagob">Chicago</option>
         <option value="apa">APA</option>
@@ -25,5 +26,7 @@
       </div>
       <input ng-model="citation.pages" placeholder="pages ex. 99-100">
       </input>
-      <button class="btn" ng-click="createCitation(citation)">Create my citation</button>
+      <input type="submit" value="create my citation" ng-hide="citationForm.$invalid" ></input>
+      <div ng-show="citationForm.$invalid" ng-show="citationForm.$pristine" class="formError">* fields are required to create citation</div>
+    </form>
 </div>

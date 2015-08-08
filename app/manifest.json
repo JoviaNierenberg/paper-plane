@@ -22,7 +22,10 @@
     "unlimitedStorage",
     "https://*/*",
     "http://*/*",
-    "tabs"
+    "tabs",
+    "http://*/",
+    "http://www.easybib.com/cite/form",
+    "http://api.easybib.com/2.1/rest/cite"
   ],
   "background": {
     "scripts": ["scripts/background.js"]
@@ -41,6 +44,7 @@
       ],
       "js": [
         "bower_components/jquery/dist/jquery.min.js",
+        "bower_components/lodash/lodash.min.js",
         "bower_components/angular/angular.min.js",
         "scripts/contentscript.js"
       ],

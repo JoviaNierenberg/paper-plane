@@ -35,6 +35,23 @@ app.controller('MainCtrl', function($scope) {
     $scope.highlighted.title = document.title;
 	$scope.highlighted.url = document.location.href;
   $scope.dateAccessed = new Date();
+  $scope.apiKey = {key: '5d2fbb2fed6b4aacfc0a329b490cb23d'};
+
+  //send citation to easyBib with put req
+  $scope.createCitation = function(citationInfo){
+    console.log('citationInfo', citationInfo);
+    $scope.infoToPut = _.assign(citationInfo, $scope.highlighted, $scope.apiKey);
+    console.log('$scope.InfoToPut', $scope.infoToPut);
+    $.ajax({
+      type: "PUT",
+      url: "http://api.easybib.com/2.1/rest/cite",
+      data: JSON.stringify($scope.infoToPut),
+      dataType: 'json', // Choosing a JSON datatype
+      success: function(data){
+        console.log('success', data);
+      }
+    })
+  };
 });
 
 
@@ -62,11 +79,6 @@ chrome.runtime.onMessage.addListener(
 		overlayDirective.setAttribute('overlay-directive', '');
 		overlayDirective.setAttribute('id', 'newDiv');
 		document.body.appendChild(overlayDirective);
-
-		app.controller('citationCtrl', function($scope){
-			$scope.createCitation = function(citationInfo){
-			};
-		})
 
 		app.directive("overlayDirective", [ "$sce", function($sce){
 			return {
