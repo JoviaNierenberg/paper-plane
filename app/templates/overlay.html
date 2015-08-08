@@ -6,11 +6,12 @@
         <hr>
       </div>
     <form name="citationForm" ng-submit="createCitation(citation)">
-      <select ng-change="sourceSelected(source)" ng-model="source" ng-required="true">
+     <div>
+     <!--  <select ng-change="sourceSelected(source)" ng-model="source" ng-required="true">
         <option value=''> Source* </option>
         <option ng-repeat="source in sourceCategories" value={{source.Name}}>{{source.Name}}</option>
-      </select>
-      <!-- <select ng-model="citation.source" ng-required="true">
+      </select> -->
+      <select ng-model="citation.source" ng-required="true">
         <option value=''> Source* </option>
         <option placeholder="source" value="website">Website</option>
         <option value="book">Book</option>
@@ -18,7 +19,7 @@
         <option value="chapter">Chapter</option>
         <option value="magazine">Magazine</option>
         <option value="newspaper">Newspaper</option>
-      </select> -->
+      </select>
       <select ng-model="citation.style" ng-required="true">
         <option value=''> Style* </option>
         <option value="mla7">MLA</option>
@@ -37,5 +38,10 @@
       <input type="submit" value="create my citation" ng-hide="citationForm.$invalid" ></input>
       </div>
       <div ng-show="citationForm.$invalid" ng-show="citationForm.$pristine" class="formError">* fields are required to create citation</div>
+    </form>
+    <form name="allCitations" ng-submit="copyCitations()">
+      <div class="citationBtn">
+       <input type="submit" value="Copy Citations to Clipboard"></input>
+      </div>
     </form>
 </div>

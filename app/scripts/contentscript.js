@@ -62,9 +62,10 @@ app.controller('MainCtrl', function($scope) {
   $scope.apiKey = {key: '5d2fbb2fed6b4aacfc0a329b490cb23d'};
 
 
-
+  $scope.projectNames = [];
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
+    $scope.projectNames.push(citationInfo.projectName);
     //set pubtype
     var pubtype;
     if (citationInfo.source === "book" || citationInfo.source === "chapter") pubtype = "pubnonperiodical";
@@ -98,10 +99,13 @@ app.controller('MainCtrl', function($scope) {
           last: "Skywalker"
         }
       ]   
-    }
+    };
+
     console.log('citationInfo', citationInfo);
     $scope.infoToPut = JSON.stringify(_.assign( $scope.apiKey, citationInfo, $scope.sourceInfo, $scope.highlighted));
     console.log('$scope.InfoToPut', $scope.infoToPut);
+    
+    //ajax request to easy bib api with citation in formation
     $.ajax({
       type: "PUT",
       url: "http://api.easybib.com/2.1/rest/cite",
@@ -109,12 +113,50 @@ app.controller('MainCtrl', function($scope) {
       dataType: 'json', // Choosing a JSON datatype
       success: function(data){
         console.log('success', data);
-      }
-    })
-  };
+        var storage = chrome.storage.local;
+        var projectName = citationInfo.projectName;
+        console.log('projectName', projectName);
+        //use project name as key
+
+        //if already data in storage then push it in
+        storage.get('projectName', function(result){
+          console.log('result', result);
+          if(Object.keys(result).length !== 0){
+            var key = Object.keys(result)[0].toString()
+            console.log('key', key);
+            var currCitations = result[key];
+            console.log('curr citations', currCitations);
+            var updatedCitations = currCitations.concat([data.data]);
+            console.log('updatedCitations', updatedCitations);
+            storage.set({'projectName' : updatedCitations }, function(result){
+              console.log('success in storage when already created a citation!', result);
+            });
+          }else{
+          //call function to store data in local storage
+          storage.set({'projectName': [data.data]}, function(){
+            console.log('Success in storage! created a new citation!');
+          });
+        }
+       
+       //check it worked
+       storage.get('projectName', function(result){
+          console.log('check it worked', result);
+       });
+
+      });
+
+    }
+  });
+
+};
+
+  $scope.copyCitations=function(){
+     chrome.storage.local.get('projectName', function(result){
+          console.log('check it worked', result);
+      });
+  }
+
 });
-
-
 // bootstrapping, opening, and closing overlay
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {

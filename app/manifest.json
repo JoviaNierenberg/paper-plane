@@ -19,6 +19,7 @@
   "permissions": [
     "webRequest",
     "debugger",
+    "storage",
     "unlimitedStorage",
     "https://*/*",
     "http://*/*",
