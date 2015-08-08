@@ -40,12 +40,12 @@ app.controller('MainCtrl', function($scope) {
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
     console.log('citationInfo', citationInfo);
-    $scope.infoToPut = _.assign(citationInfo, $scope.highlighted, $scope.apiKey);
+    $scope.infoToPut = JSON.stringify(_.assign(, $scope.apiKey, citationInfo, $scope.highlighted));
     console.log('$scope.InfoToPut', $scope.infoToPut);
     $.ajax({
       type: "PUT",
       url: "http://api.easybib.com/2.1/rest/cite",
-      data: JSON.stringify($scope.infoToPut),
+      data: $scope.infoToPut,
       dataType: 'json', // Choosing a JSON datatype
       success: function(data){
         console.log('success', data);
