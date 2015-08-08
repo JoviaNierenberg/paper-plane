@@ -36,24 +36,24 @@ app.controller('MainCtrl', function($scope) {
   $scope.apiKey = {key: '5d2fbb2fed6b4aacfc0a329b490cb23d'};
 
   // testing variables
-  $scope.sourceInfo = {
-    website: {
-      title : "puppies"
-    },
-    pubtype: {
-      main: "pubonline"
-    },
-    pubonline: {
-      title: $scope.highlighted.contentTitle,
-      inst: "Organization that owns web site",
-      day: "6",
-      month: "january",
-      year: "2001",
-      dayaccessed: "8",
-      monthaccessed: "march",
-      yearaccessed: "2007",
-    }
-  }
+  // $scope.sourceInfo = {
+  //   website: {
+  //     title : "puppies"
+  //   },
+  //   pubtype: {
+  //     main: "pubonline"
+  //   },
+  //   pubonline: {
+  //     title: $scope.highlighted.contentTitle,
+  //     inst: "Organization that owns web site",
+  //     day: "6",
+  //     month: "january",
+  //     year: "2001",
+  //     dayaccessed: "8",
+  //     monthaccessed: "march",
+  //     yearaccessed: "2007",
+  //   }
+  // }
 
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
@@ -81,32 +81,31 @@ chrome.runtime.onMessage.addListener(
                 "from the extension");
     // create overlay on page the first time extension button is clicked
     if (request.takeOff === true){
-    
+      
+  		var html = document.querySelector('html');
+  		html.setAttribute('ng-app', '');
+  		html.setAttribute('ng-csp', '');
 
-		var html = document.querySelector('html');
-		html.setAttribute('ng-app', '');
-		html.setAttribute('ng-csp', '');
+  		var overlay = document.getElementsByTagName("body")[0];
+  		overlay = overlay.getElementsByTagName("div")[0];
+  		console.log("overlay: ", overlay);
+  		overlay.setAttribute('ng-controller', 'MainCtrl');
+  		
 
-		var overlay = document.getElementsByTagName("body")[0];
-		overlay = overlay.getElementsByTagName("div")[0];
-		console.log("overlay: ", overlay);
-		overlay.setAttribute('ng-controller', 'MainCtrl');
-		
+  		var overlayDirective = document.createElement('div');
+  		overlayDirective.setAttribute('overlay-directive', '');
+  		overlayDirective.setAttribute('id', 'newDiv');
+  		document.body.appendChild(overlayDirective);
 
-		var overlayDirective = document.createElement('div');
-		overlayDirective.setAttribute('overlay-directive', '');
-		overlayDirective.setAttribute('id', 'newDiv');
-		document.body.appendChild(overlayDirective);
+  		app.directive("overlayDirective", [ "$sce", function($sce){
+  			return {
+  				restrict: 'EA',
+  				// replace: true,
+  				templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/overlay.html'))
+  			}
+  		}]);
 
-		app.directive("overlayDirective", [ "$sce", function($sce){
-			return {
-				restrict: 'EA',
-				// replace: true,
-				templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/overlay.html'))
-			}
-		}]);
-
-		angular.bootstrap(html, ['PaperPlane'], []);
+  		angular.bootstrap(html, ['PaperPlane'], []);
     } 
 
     // hide overlay from page when extension button is toggled
