@@ -1,7 +1,10 @@
 
  <div id="paperPlane" ng-model="citation" ng-controller="MainCtrl">
      <link rel=stylesheet type="text/css" href="../styles/main.css">
-      <div class="text"><h1>Paper Plane</h1></div>
+      <div class="title">Paper Plane
+        <img class="planeicon" src="http://www.childrenandyouth.co.uk/wp-content/uploads/2014/08/Paper-Aeroplane.png" height="20%" width="20%">
+        <hr>
+      </div>
     <form name="citationForm" ng-submit="createCitation(citation)">
       <select ng-change="sourceSelected(source)" ng-model="source" ng-required="true">
         <option value=''> Source* </option>
@@ -30,7 +33,9 @@
       </div>
       <input ng-model="citation.pages" placeholder="pages ex. 99-100">
       </input>
+      <div class="citationBtn">
       <input type="submit" value="create my citation" ng-hide="citationForm.$invalid" ></input>
+      </div>
       <div ng-show="citationForm.$invalid" ng-show="citationForm.$pristine" class="formError">* fields are required to create citation</div>
     </form>
 </div>
