@@ -35,36 +35,44 @@ app.controller('MainCtrl', function($scope) {
   $scope.dateAccessed = new Date();
   $scope.apiKey = {key: '5d2fbb2fed6b4aacfc0a329b490cb23d'};
 
-  // testing variables
-  $scope.sourceInfo = {
-    website: {
-      title : "puppies"
-    },
-    pubtype: {
-      main: "pubonline"
-    },
-    pubonline: {
-      title: $scope.highlighted.contentTitle,
-      inst: "Organization that owns web site",
-      day: "6",
-      month: "january",
-      year: "2001",
-      dayaccessed: "8",
-      monthaccessed: "march",
-      yearaccessed: "2007",
-    },
-    contributors: [
-      {
-        function: "author",
-        first: "Luke",
-        middle: "A",
-        last: "Skywalker"
-      }
-    ]   
-  }
+
 
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
+    //set pubtype
+    var pubtype;
+    if (citationInfo.source === "book" || citationInfo.source === "chapter") pubtype = "pubnonperiodical";
+    else if (citationInfo.source === "magazine") pubtype = "pubmagazine";
+    else if (citationInfo.source === "newspaper") pubtype = "pubnewspaper";
+    else if (citationInfo.source === "journal") pubtype = "pubjournal";
+    else if (citationInfo.source === "website") pubtype = "pubonline";
+    // testing variables
+    $scope.sourceInfo = {
+      [citationInfo.source]: { // need make this any citation source, not just websites
+        title : $scope.highlighted.contentTitle
+      },
+      pubtype: {
+        main: pubtype
+      },
+      [pubtype]: {
+        title: $scope.highlighted.contentTitle,
+        inst: "Organization that owns web site",
+        day: "6",
+        month: "january",
+        year: "2001",
+        dayaccessed: "8",
+        monthaccessed: "march",
+        yearaccessed: "2007",
+      },
+      contributors: [
+        {
+          function: "author",
+          first: "Luke",
+          middle: "A",
+          last: "Skywalker"
+        }
+      ]   
+    }
     console.log('citationInfo', citationInfo);
     $scope.infoToPut = JSON.stringify(_.assign( $scope.apiKey, citationInfo, $scope.sourceInfo, $scope.highlighted));
     console.log('$scope.InfoToPut', $scope.infoToPut);
