@@ -9,52 +9,42 @@ app.controller('MainCtrl', function($scope) {
     $scope.highlighted = {};
 
     // sources
-    $scope.sourceCategories = [
-      {Name: "website"},
-      {Name: "book"},
-      {Name: "journal"},
-      {Name: "chapter"},
-      {Name: "magazine"},
-      {Name: "newspaper"}
-    ]
+    $scope.sourceCategories = {
+      "website": ["article title", "website title", "institution", "date published"], 
+      "book": ["book title", "publisher name", "city published", "state published", "volume", "edition", "year published"], // pages needs to include start, end, and non-consecutive
+      "journal": ["article title", "journal title", "journal issue", "journal volume", "journal series", "date published"], // pages needs to include start, end, and non-consecutive. checkbox for if journal restarts page numbering.
+      "chapter": ["chapter title", "book title", "publisher name", "city published", "state published", "volume", "edition", "year published"], // pages needs to include start, end, and non-consecutive
+      "magazine": ["article title", "magazine title", "volume", "publication date"],// pages needs to include start, end, and non-consecutive
+      "newspaper": ["article title", "newspaper title", "edition (late, etc.)", "newspaper section", "city published", "publication date"] // pages needs to include start, end, and non-consecutive 
+    }
     // set source
     $scope.sourceSelected = function(source){
-      console.log("source as entered function: ", source)
       $scope.source = source;
-      console.log("$scope.source", $scope.source)
+      $(document).on("click", function (v) {
+        console.log("$scope.source: ", $scope.source)
+        console.log("fields: ", $scope.sourceCategories[$scope.source])
+
+        if ($scope.sourceCategories[$scope.source].length > 0){ //////////
+          $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
+          $scope.found = false;
+
+          while ($scope.elem.parentNode) {
+            if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
+            $scope.elem = $scope.elem.parentNode;
+          }
+          
+         $scope.range, $scope.selected = window.getSelection();
+         $scope.selectedText = $scope.selected.toString();    
+          if ($scope.selectedText.trim() !== "") {
+            // display correct category
+           $scope.highlighted[$scope.sourceCategories[$scope.source].shift()] = $scope.selectedText;
+           $scope.$digest();
+          }
+        }
+      });
     }
 
-    // categories to show based on source
-    $scope.bookCategories = ["book title", "publisher name", "city published", "state published", "volume", "edition", "year published"]; // pages needs to include start, end, and non-consecutive
-    $scope.chapterCategories = ["chapter title", "book title", "publisher name", "city published", "state published", "volume", "edition", "year published"]; // pages needs to include start, end, and non-consecutive
-    $scope.magazineCategories = ["article title", "magazine title", "volume", "publication date"]; // pages needs to include start, end, and non-consecutive
-    $scope.newspaperCategories = ["article title", "newspaper title", "edition (late, etc.)", "newspaper section", "city published", "publication date"]; // pages needs to include start, end, and non-consecutive
-    $scope.journalCategories = ["article title", "journal title", "journal issue", "journal volume", "journal series", "date published"]; // pages needs to include start, end, and non-consecutive. checkbox for if journal restarts page numbering.
-    $scope.onlineCategories = ["article title", "website title", "institution", "date published"];
-
-
-
-    $scope.categories = ["author(s)", "editor", "contentTitle", "journalTitle", "publisher", "date", "journalVolume"]
-    
-  	$(document).on("click", function (v) {
-  		if ($scope.categories.length > 0){
-  	    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
-  	    $scope.found = false;
-
-  	    while ($scope.elem.parentNode) {
-  	      if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
-  		    $scope.elem = $scope.elem.parentNode;
-  		  }
-  	    
-    		$scope.range, $scope.selected = window.getSelection();
-    		$scope.selectedText = $scope.selected.toString();    
-        if ($scope.selectedText.trim() !== "") {
-          // display correct category
-    			$scope.highlighted[$scope.categories.shift()] = $scope.selectedText;
-    			$scope.$digest();
-        }
-      }
-    });
+    // $scope.categories = ["author(s)", "editor", "contentTitle", "journalTitle", "publisher", "date", "journalVolume"]
     
   $scope.highlighted.title = document.title;
 	$scope.highlighted.url = document.location.href;
@@ -67,29 +57,32 @@ app.controller('MainCtrl', function($scope) {
   $scope.createCitation = function(citationInfo){
     //set pubtype
     var pubtype;
-    if (citationInfo.source === "book" || citationInfo.source === "chapter") pubtype = "pubnonperiodical";
-    else if (citationInfo.source === "magazine") pubtype = "pubmagazine";
-    else if (citationInfo.source === "newspaper") pubtype = "pubnewspaper";
-    else if (citationInfo.source === "journal") pubtype = "pubjournal";
-    else if (citationInfo.source === "website") pubtype = "pubonline";
+    if ($scope.source === "book" || $scope.source === "chapter") pubtype = "pubnonperiodical";
+    else if ($scope.source === "magazine") pubtype = "pubmagazine";
+    else if ($scope.source === "newspaper") pubtype = "pubnewspaper";
+    else if ($scope.source === "journal") pubtype = "pubjournal";
+    else if ($scope.source === "website") pubtype = "pubonline";
     // testing variables
     $scope.sourceInfo = {
-      [citationInfo.source]: { // need make this any citation source, not just websites
+      source: $scope.source,
+      style: citationInfo.style,
+      [$scope.source]: { // need make this any citation source, not just websites
         title : $scope.highlighted.contentTitle
       },
       pubtype: {
         main: pubtype
       },
-      [pubtype]: {
-        title: $scope.highlighted.contentTitle,
-        inst: "Organization that owns web site",
-        day: "6",
-        month: "january",
-        year: "2001",
-        dayaccessed: "8",
-        monthaccessed: "march",
-        yearaccessed: "2007",
-      },
+      [pubtype]: $scope.highlighted,
+      // {
+      //   title: $scope.highlighted.contentTitle,
+      //   inst: "Organization that owns web site",
+      //   day: "6",
+      //   month: "january",
+      //   year: "2001",
+      //   dayaccessed: "8",
+      //   monthaccessed: "march",
+      //   yearaccessed: "2007",
+      // },
       contributors: [
         {
           function: "author",
@@ -100,7 +93,7 @@ app.controller('MainCtrl', function($scope) {
       ]   
     }
     console.log('citationInfo', citationInfo);
-    $scope.infoToPut = JSON.stringify(_.assign( $scope.apiKey, citationInfo, $scope.sourceInfo, $scope.highlighted));
+    $scope.infoToPut = JSON.stringify(_.assign( $scope.apiKey, $scope.sourceInfo, $scope.highlighted));
     console.log('$scope.InfoToPut', $scope.infoToPut);
     $.ajax({
       type: "PUT",
