@@ -3,44 +3,62 @@
 var app = angular.module("PaperPlane", []);
 app.controller('MainCtrl', function($scope) {
 
+// getting data into categories
     $scope.range;
     $scope.selected;
 
     $scope.highlighted = {};
-    $scope.categories = ["author(s)", "editor", "content title", "journal title", "publisher", "date", "journal volume"]
+    $scope.categories = ["author(s)", "editor", "contentTitle", "journalTitle", "publisher", "date", "journalVolume"]
     
+  	$(document).on("click", function (v) {
+  		// console.log("categories length: ", $scope.categories.length)
+  		if ($scope.categories.length > 0){
+  	    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
+  	    $scope.found = false;
 
-    	$(document).on("click", function (v) {
-    		console.log("categories length: ", $scope.categories.length)
-    		if ($scope.categories.length > 0){
-		    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
-		    $scope.found = false;
-
-		    while ($scope.elem.parentNode) {
-		      if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
-			      $scope.elem = $scope.elem.parentNode;
-			    }
-		    
-			$scope.range, $scope.selected = window.getSelection();
-			$scope.selectedText = $scope.selected.toString();    
-	        if ($scope.selectedText.trim() !== "") {
-				$scope.highlighted[$scope.categories.shift()] = $scope.selectedText;
-				console.log("$scope.categories: ", $scope.categories)
-				$scope.$digest();
-	        }
-			console.log('a page', $scope.highlighted);
-	    }
+  	    while ($scope.elem.parentNode) {
+  	      if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
+  		    $scope.elem = $scope.elem.parentNode;
+  		  }
+  	    
+    		$scope.range, $scope.selected = window.getSelection();
+    		$scope.selectedText = $scope.selected.toString();    
+        if ($scope.selectedText.trim() !== "") {
+    			$scope.highlighted[$scope.categories.shift()] = $scope.selectedText;
+    			$scope.$digest();
+        }
+      }
     });
     
-    $scope.highlighted.title = document.title;
+  $scope.highlighted.title = document.title;
 	$scope.highlighted.url = document.location.href;
   $scope.dateAccessed = new Date();
   $scope.apiKey = {key: '5d2fbb2fed6b4aacfc0a329b490cb23d'};
 
+  // testing variables
+  $scope.sourceInfo = {
+    website: {
+      title : "puppies"
+    },
+    pubtype: {
+      main: "pubonline"
+    },
+    pubonline: {
+      title: $scope.highlighted.contentTitle,
+      inst: "Organization that owns web site",
+      day: "6",
+      month: "january",
+      year: "2001",
+      dayaccessed: "8",
+      monthaccessed: "march",
+      yearaccessed: "2007",
+    }
+  }
+
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
     console.log('citationInfo', citationInfo);
-    $scope.infoToPut = JSON.stringify(_.assign(, $scope.apiKey, citationInfo, $scope.highlighted));
+    $scope.infoToPut = JSON.stringify(_.assign( $scope.apiKey, citationInfo, $scope.sourceInfo, $scope.highlighted));
     console.log('$scope.InfoToPut', $scope.infoToPut);
     $.ajax({
       type: "PUT",
