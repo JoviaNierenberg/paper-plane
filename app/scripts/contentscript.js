@@ -6,12 +6,37 @@ app.controller('MainCtrl', function($scope) {
 // getting data into categories
     $scope.range;
     $scope.selected;
-
     $scope.highlighted = {};
+
+    // sources
+    $scope.sourceCategories = [
+      {Name: "website"},
+      {Name: "book"},
+      {Name: "journal"},
+      {Name: "chapter"},
+      {Name: "magazine"},
+      {Name: "newspaper"}
+    ]
+    // set source
+    $scope.sourceSelected = function(source){
+      console.log("source as entered function: ", source)
+      $scope.source = source;
+      console.log("$scope.source", $scope.source)
+    }
+
+    // categories to show based on source
+    $scope.bookCategories = ["book title", "publisher name", "city published", "state published", "volume", "edition", "year published"]; // pages needs to include start, end, and non-consecutive
+    $scope.chapterCategories = ["chapter title", "book title", "publisher name", "city published", "state published", "volume", "edition", "year published"]; // pages needs to include start, end, and non-consecutive
+    $scope.magazineCategories = ["article title", "magazine title", "volume", "publication date"]; // pages needs to include start, end, and non-consecutive
+    $scope.newspaperCategories = ["article title", "newspaper title", "edition (late, etc.)", "newspaper section", "city published", "publication date"]; // pages needs to include start, end, and non-consecutive
+    $scope.journalCategories = ["article title", "journal title", "journal issue", "journal volume", "journal series", "date published"]; // pages needs to include start, end, and non-consecutive. checkbox for if journal restarts page numbering.
+    $scope.onlineCategories = ["article title", "website title", "institution", "date published"];
+
+
+
     $scope.categories = ["author(s)", "editor", "contentTitle", "journalTitle", "publisher", "date", "journalVolume"]
     
   	$(document).on("click", function (v) {
-  		// console.log("categories length: ", $scope.categories.length)
   		if ($scope.categories.length > 0){
   	    $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
   	    $scope.found = false;
@@ -24,6 +49,7 @@ app.controller('MainCtrl', function($scope) {
     		$scope.range, $scope.selected = window.getSelection();
     		$scope.selectedText = $scope.selected.toString();    
         if ($scope.selectedText.trim() !== "") {
+          // display correct category
     			$scope.highlighted[$scope.categories.shift()] = $scope.selectedText;
     			$scope.$digest();
         }

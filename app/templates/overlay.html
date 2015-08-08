@@ -3,7 +3,11 @@
      <link rel=stylesheet type="text/css" href="../styles/main.css">
       <div class="text"><h1>Paper Plane</h1></div>
     <form name="citationForm" ng-submit="createCitation(citation)">
-      <select ng-model="citation.source" ng-required="true">
+      <select ng-change="sourceSelected(source)" ng-model="source" ng-required="true">
+        <option value=''> Source* </option>
+        <option ng-repeat="source in sourceCategories" value={{source.Name}}>{{source.Name}}</option>
+      </select>
+      <!-- <select ng-model="citation.source" ng-required="true">
         <option value=''> Source* </option>
         <option placeholder="source" value="website">Website</option>
         <option value="book">Book</option>
@@ -11,7 +15,7 @@
         <option value="chapter">Chapter</option>
         <option value="magazine">Magazine</option>
         <option value="newspaper">Newspaper</option>
-      </select>
+      </select> -->
       <select ng-model="citation.style" ng-required="true">
         <option value=''> Style* </option>
         <option value="mla7">MLA</option>
