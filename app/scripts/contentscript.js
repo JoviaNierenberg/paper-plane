@@ -52,7 +52,15 @@ app.controller('MainCtrl', function($scope) {
       dayaccessed: "8",
       monthaccessed: "march",
       yearaccessed: "2007",
-    }
+    },
+    contributors: [
+      {
+        function: "author",
+        first: "Luke",
+        middle: "A",
+        last: "Skywalker"
+      }
+    ]   
   }
 
   //send citation to easyBib with put req
