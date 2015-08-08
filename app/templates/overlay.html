@@ -17,11 +17,13 @@
         <option value="chicagob">Chicago</option>
         <option value="apa">APA</option>
       </select>
-      <p>{{highlighted}}</p>
+      <div class="displayHighlight"ng-repeat="(key, value) in highlighted">
+        <b>{{key}} <b>: {{value}}
+      </div>
       <div ng-hide="categories.length === 0">
         <p> Highlight the {{categories[0]}} </p> 
       </div>
       <input ng-model="citation.pages" placeholder="pages ex. 99-100">
       </input>
-      <button ng-click="createCitation(citation)">Create my citation</button>
+      <button class="btn" ng-click="createCitation(citation)">Create my citation</button>
 </div>
