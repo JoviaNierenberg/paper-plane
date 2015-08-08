@@ -6,15 +6,11 @@ var urlsVisited = {};
 
 // bootstrapping, opening, and closing overlay
 chrome.browserAction.onClicked.addListener(function(tab) { 
-	console.log('window.top', window.top);
 
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-		console.log('tabs', tabs[0].url);
-		console.log('urlsVisited', urlsVisited)
-		
+		console.log('tabs[0]',tabs[0]);
 		//if extension has been bootstrapped, and we go to a NEW page, reset it  
 	  if(!urlsVisited[tabs[0].url] && clickState !== undefined){
-	  	console.log('here');
 	  	clickState = undefined;
 	  };
 
