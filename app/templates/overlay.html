@@ -8,7 +8,7 @@
     <form name="citationForm" ng-submit="createCitation(citation)">
       <select ng-change="sourceSelected(source)" ng-model="source" ng-required="true">
         <option value=''> Source* </option>
-        <option ng-repeat="source in sourceCategories" value={{source.Name}}>{{source.Name}}</option>
+        <option ng-repeat="(key, value) in sourceCategories" value={{key}}>{{key}}</option>
       </select>
       <!-- <select ng-model="citation.source" ng-required="true">
         <option value=''> Source* </option>
@@ -28,8 +28,8 @@
       <div class="displayHighlight"ng-repeat="(key, value) in highlighted">
         <b>{{key}} <b>: {{value}}
       </div>
-      <div ng-hide="categories.length === 0">
-        <p> Highlight the {{categories[0]}} </p> 
+      <div ng-hide="sourceCategories[source].length === 0">
+        <p> Highlight the {{sourceCategories[source][0]}} </p> 
       </div>
       <input ng-model="citation.pages" placeholder="pages ex. 99-100">
       </input>
