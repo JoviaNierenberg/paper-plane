@@ -89,32 +89,31 @@ chrome.runtime.onMessage.addListener(
                 "from the extension");
     // create overlay on page the first time extension button is clicked
     if (request.takeOff === true){
-    
+      
+  		var html = document.querySelector('html');
+  		html.setAttribute('ng-app', '');
+  		html.setAttribute('ng-csp', '');
 
-		var html = document.querySelector('html');
-		html.setAttribute('ng-app', '');
-		html.setAttribute('ng-csp', '');
+  		var overlay = document.getElementsByTagName("body")[0];
+  		overlay = overlay.getElementsByTagName("div")[0];
+  		console.log("overlay: ", overlay);
+  		overlay.setAttribute('ng-controller', 'MainCtrl');
+  		
 
-		var overlay = document.getElementsByTagName("body")[0];
-		overlay = overlay.getElementsByTagName("div")[0];
-		console.log("overlay: ", overlay);
-		overlay.setAttribute('ng-controller', 'MainCtrl');
-		
+  		var overlayDirective = document.createElement('div');
+  		overlayDirective.setAttribute('overlay-directive', '');
+  		overlayDirective.setAttribute('id', 'newDiv');
+  		document.body.appendChild(overlayDirective);
 
-		var overlayDirective = document.createElement('div');
-		overlayDirective.setAttribute('overlay-directive', '');
-		overlayDirective.setAttribute('id', 'newDiv');
-		document.body.appendChild(overlayDirective);
+  		app.directive("overlayDirective", [ "$sce", function($sce){
+  			return {
+  				restrict: 'EA',
+  				// replace: true,
+  				templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/overlay.html'))
+  			}
+  		}]);
 
-		app.directive("overlayDirective", [ "$sce", function($sce){
-			return {
-				restrict: 'EA',
-				// replace: true,
-				templateUrl: $sce.trustAsResourceUrl(chrome.extension.getURL('templates/overlay.html'))
-			}
-		}]);
-
-		angular.bootstrap(html, ['PaperPlane'], []);
+  		angular.bootstrap(html, ['PaperPlane'], []);
     } 
 
     // hide overlay from page when extension button is toggled
