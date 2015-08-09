@@ -53,15 +53,17 @@ app.controller('MainCtrl', function($scope) {
 
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
-    console.log("citationInfo: ", citationInfo)
     console.log("$scope.highlighted: ", $scope.highlighted)
     // references common name when setting easybib name
     $scope.highlighted.title = $scope.highlighted["book title"] || $scope.highlighted["magazine title"] || $scope.highlighted["newspaper title"] || $scope.highlighted["journal title"] || $scope.highlighted["website title"];
     if ($scope.highlighted["volume"]) $scope.highlighted.vol = $scope.highlighted["volume"];
     // format date
-    console.log("date published", $scope.highlighted["date published"])
-    var dateF = moment($scope.highlighted["date published"], ["MM-DD-YYYY", "YYYY-MM-DD", "MM/DD/YYYY", "M/D/YYYY", "MMMM Do YYYY", "MMM D YYYY", "MMMM Do YYYY LT", "MMM D YYYY LT", "dddd, MMMM Do YYYY LT", "ddd, MMM D YYYY LT"]).toDate();
-    console.log("date formatted: ", dateF)
+    var dateJSFormat = moment($scope.highlighted["date published"], ["MM-DD-YYYY", "YYYY-MM-DD", "MM/DD/YYYY", "M/D/YYYY", "MMMM Do YYYY", "MMM D YYYY", "MMMM Do YYYY LT", "MMM D YYYY LT", "dddd, MMMM Do YYYY LT", "ddd, MMM D YYYY LT", "YYYY MMM D", "YYYY MMM DD"]).toDate();
+    $scope.highlighted.day = dateJSFormat.getDate();
+    $scope.highlighted.month = monthNames[dateJSFormat.getMonth()];
+    $scope.highlighted.year = dateJSFormat.getUTCFullYear();
+
+
     // format authors
     // format pages
     if (citationInfo.pages){
