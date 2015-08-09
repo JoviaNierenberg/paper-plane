@@ -11,19 +11,19 @@ app.controller('MainCtrl', function($scope) {
     // sources
     $scope.sourceCategories = {
       "website": ["article title", "author(s)", "website title", "institution", "date published"], 
-      "book": ["book title", "author(s)", "publisher", "city", "state", "volume", "edition", "year published"], // pages needs to include start, end, and non-consecutive
+      "book": ["book title", "author(s)", "publisher", "city, state", "volume", "edition", "year published"], // pages needs to include start, end, and non-consecutive
       "journal": ["article title", "author(s)", "journal title", "issue", "volume", "series", "date published"], // pages needs to include start, end, and non-consecutive. checkbox for if journal restarts page numbering.
-      "chapter": ["chapter title", "author(s)", "book title", "publisher name", "city published", "state published", "volume", "edition", "year published"], // pages needs to include start, end, and non-consecutive
-      "magazine": ["article title", "author(s)", "magazine title", "vol", "publication date"],// pages needs to include start, end, and non-consecutive
-      "newspaper": ["article title", "author(s)", "newspaper title", "edition (late, etc.)", "newspaper section", "city published", "publication date"] // pages needs to include start, end, and non-consecutive 
+      "chapter": ["chapter title", "author(s)", "book title", "publisher name", "city, state", "volume", "edition", "year published"], // pages needs to include start, end, and non-consecutive
+      "magazine": ["article title", "author(s)", "magazine title", "volume", "date published"],// pages needs to include start, end, and non-consecutive
+      "newspaper": ["article title", "author(s)", "newspaper title", "edition (late, etc.)", "newspaper section", "city published", "date published"] // pages needs to include start, end, and non-consecutive 
     }
     // set source
     $scope.sourceSelected = function(source){
       $scope.source = source;
       // highlighting
       $(document).on("click", function (v) {
-        console.log("$scope.source: ", $scope.source)
-        console.log("fields: ", $scope.sourceCategories[$scope.source])
+        // console.log("$scope.source: ", $scope.source)
+        // console.log("fields: ", $scope.sourceCategories[$scope.source])
 
         if ($scope.sourceCategories[$scope.source].length > 0){
           $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
@@ -43,33 +43,43 @@ app.controller('MainCtrl', function($scope) {
           }
         }
       });
-    }
+    } 
     
   // $scope.highlighted.title = document.title;
 	$scope.highlighted.url = document.location.href;
   $scope.dateAccessed = new Date();
+  var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   $scope.apiKey = {key: '5d2fbb2fed6b4aacfc0a329b490cb23d'};
-
 
   //send citation to easyBib with put req
   $scope.createCitation = function(citationInfo){
     console.log("citationInfo: ", citationInfo)
     console.log("$scope.highlighted: ", $scope.highlighted)
+    // references common name when setting easybib name
+    $scope.highlighted.title = $scope.highlighted["book title"] || $scope.highlighted["magazine title"] || $scope.highlighted["newspaper title"] || $scope.highlighted["journal title"] || $scope.highlighted["website title"];
+    if ($scope.highlighted["volume"]) $scope.highlighted.vol = $scope.highlighted["volume"];
+    // format date
+    console.log("date published", $scope.highlighted["date published"])
+    var dateF = moment($scope.highlighted["date published"], ["MM-DD-YYYY", "YYYY-MM-DD", "MM/DD/YYYY", "M/D/YYYY", "MMMM Do YYYY", "MMM D YYYY", "MMMM Do YYYY LT", "MMM D YYYY LT", "dddd, MMMM Do YYYY LT", "ddd, MMM D YYYY LT"]).toDate();
+    console.log("date formatted: ", dateF)
+    // format authors
+    // format pages
+    if (citationInfo.pages){
+      var pageRange = citationInfo.pages.split("-");
+      $scope.highlighted.start = pageRange[0];
+      $scope.highlighted.end = pageRange[1];
+    }
     //set pubtype
-    var pubtype, title, publisher;
+    var pubtype;
     if ($scope.source === "book" || $scope.source === "chapter") {
-      pubtype = "pubnonperiodical";
-      $scope.highlighted.title = $scope.highlighted["book title"];
-      // state
-      // vol
-      // editiontext
-      // year
-
+      pubtype = "pubnonperiodical";   
+      $scope.highlighted.city = $scope.highlighted["city, state"].split(", ")[0];
+      $scope.highlighted.state = $scope.highlighted["city, state"].split(", ")[1];    
+      $scope.highlighted.editiontext = $scope.highlighted["edition"];
+      $scope.highlighted.year = $scope.highlighted["year published"];
     }
     else if ($scope.source === "magazine") {
       pubtype = "pubmagazine";
-      // title
-      // vol
       // day
       // month
       // year
@@ -77,43 +87,25 @@ app.controller('MainCtrl', function($scope) {
     }
     else if ($scope.source === "newspaper") {
       pubtype = "pubnewspaper";
-      // title
-      // edition
-      // section
-      // city
+      $scope.highlighted.edition = $scope.highlighted["edition (late, etc.)"];
+      $scope.highlighted.section = $scope.highlighted["newspaper section"];
+      $scope.highlighted.city = $scope.highlighted["city published"];
       // day
       // month
       // year
     }
-    else if ($scope.source === "journal") {
-      pubtype = "pubjournal";
-      // title
-      // issue
-      // volume
-      // series
-      // year
-    }
+    else if ($scope.source === "journal") pubtype = "pubjournal";
     else if ($scope.source === "website") {
       pubtype = "pubonline";
-      // title
-      // inst
+      $scope.highlighted.inst = $scope.highlighted["institution"];
       // day
       // month
       // year
-      // url
-      // day accessed
-      // month accessed
-      // year accessed
+      $scope.highlighted.dayaccessed = $scope.dateAccessed.getDate();
+      $scope.highlighted.monthaccessed = monthNames[$scope.dateAccessed.getMonth()];
+      $scope.highlighted.yearaccessed = $scope.dateAccessed.getUTCFullYear();
     }
-    // format date
-    // format authors
-    // format [pubtype] section
-    // format pages
-    if (citationInfo.pages){
-      var pageRange = citationInfo.pages.split("-");
-      $scope.highlighted.start = pageRange[0];
-      $scope.highlighted.end = pageRange[1];
-    }
+
     $scope.sourceInfo = {
       source: $scope.source,
       style: citationInfo.style,
