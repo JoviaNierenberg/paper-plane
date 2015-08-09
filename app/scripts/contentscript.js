@@ -141,7 +141,10 @@ app.controller('MainCtrl', function($scope) {
       success: function(data){
         var projectName = citationInfo.projectName;
         //use project name as key
-
+        chrome.runtime.sendMessage({
+              type: 'copy',
+              text:  data.data
+        });
         //if already data in storage then push it in
         storage.get('projectName', function(result){
           console.log('result', result);
@@ -162,7 +165,6 @@ app.controller('MainCtrl', function($scope) {
 
     }
   });
-
 
    //get last citation
     storage.get('projectName', function(result){

@@ -41,6 +41,7 @@
       ],
       "css": [
         "bower_components/angular/angular-csp.css",
+        "bower_components/font-awesome/css/font-awesome.min.css",
         "styles/main.css"
       ],
       "js": [
