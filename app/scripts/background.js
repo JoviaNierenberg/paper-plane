@@ -44,7 +44,19 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 });
 
 chrome.runtime.onMessage.addListener(function(message) {
-    if (message && message.type == 'copy') {
+    if (message && message.type == 'copyOne') {
+        var input = document.createElement('textarea');
+        document.body.appendChild(input);
+        input.value = message.text;
+        input.focus();
+        input.select();
+        document.execCommand('Copy');
+        input.remove();
+    }
+});
+
+chrome.runtime.onMessage.addListener(function(message) {
+    if (message && message.type == 'copyAll') {
         var input = document.createElement('textarea');
         document.body.appendChild(input);
         input.value = message.text;

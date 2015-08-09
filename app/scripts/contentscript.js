@@ -136,12 +136,14 @@ app.controller('MainCtrl', function($scope, $sce) {
         var projectName = citationInfo.projectName;
         //use project name as key
         chrome.runtime.sendMessage({
-              type: 'copy',
+              type: 'copyOne',
               text:  data.data
         });
+
+        $scope.lastCitation = data.data;
+        $scope.$digest();
         //if already data in storage then push it in
         storage.get('projectName', function(result){
-          console.log('result', result);
           if(Object.keys(result).length !== 0){
             var key = Object.keys(result)[0].toString()
             var currCitations = result[key];
@@ -156,6 +158,7 @@ app.controller('MainCtrl', function($scope, $sce) {
         }
       });
     }
+
   });
 
    //get last citation
@@ -163,6 +166,7 @@ app.controller('MainCtrl', function($scope, $sce) {
            $scope.lastCitation = result['projectName'][result['projectName'].length-1];
            $scope.$digest();
     });
+
 };
 
   $scope.copyCitations=function(){
@@ -176,7 +180,7 @@ app.controller('MainCtrl', function($scope, $sce) {
           $scope.$digest();
           console.log('all citations', $scope.citationsClipped);
           chrome.runtime.sendMessage({
-              type: 'copy',
+              type: 'copyAll',
               text:  $scope.citationsClipped
           });
           console.log('Citations clipped!', result);
