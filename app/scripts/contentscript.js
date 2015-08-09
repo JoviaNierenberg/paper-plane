@@ -137,7 +137,7 @@ app.controller('MainCtrl', function($scope) {
     console.log('citationInfo', citationInfo);
     $scope.infoToPut = JSON.stringify(_.assign( $scope.apiKey, $scope.sourceInfo));
     console.log('$scope.InfoToPut', $scope.infoToPut);
-    
+    var storage = chrome.storage.local;
     //ajax request to easy bib api with citation in formation
     $.ajax({
       type: "PUT",
@@ -146,7 +146,6 @@ app.controller('MainCtrl', function($scope) {
       dataType: 'json', // Choosing a JSON datatype
       success: function(data){
         console.log('success', data);
-        var storage = chrome.storage.local;
         var projectName = citationInfo.projectName;
         console.log('projectName', projectName);
         //use project name as key
@@ -170,16 +169,18 @@ app.controller('MainCtrl', function($scope) {
             console.log('Success in storage! created a new citation!');
           });
         }
-       
-       //check it worked
-       storage.get('projectName', function(result){
-          console.log('check it worked', result);
-       });
 
       });
 
     }
   });
+
+
+   //get last citation
+    storage.get('projectName', function(result){
+           $scope.lastCitation = result['projectName'][result['projectName'].length-1];
+           $scope.$digest();
+    });
 
 };
 
