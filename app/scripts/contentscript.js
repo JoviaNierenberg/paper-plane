@@ -101,9 +101,9 @@ app.controller('MainCtrl', function($scope) {
       // day
       // month
       // year
-      $scope.highlighted.dayaccessed = $scope.dateAccessed.getDate();
-      $scope.highlighted.monthaccessed = monthNames[$scope.dateAccessed.getMonth()];
-      $scope.highlighted.yearaccessed = $scope.dateAccessed.getUTCFullYear();
+      $scope.highlighted['Day_Accessed'] = $scope.dateAccessed.getDate();
+      $scope.highlighted['Month_Accessed'] = monthNames[$scope.dateAccessed.getMonth()];
+      $scope.highlighted['Year_Accessed'] = $scope.dateAccessed.getUTCFullYear();
     }
 
     $scope.sourceInfo = {
