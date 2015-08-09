@@ -185,7 +185,7 @@ app.controller('MainCtrl', function($scope) {
 
   $scope.copyCitations=function(){
      chrome.storage.local.get('projectName', function(result){
-          console.log('check it worked', result);
+          console.log('Citations clipped!', result);
       });
   }
 
