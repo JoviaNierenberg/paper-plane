@@ -164,7 +164,6 @@ app.controller('MainCtrl', function($scope) {
     }
   });
 
-
    //get last citation
     storage.get('projectName', function(result){
            $scope.lastCitation = result['projectName'][result['projectName'].length-1];

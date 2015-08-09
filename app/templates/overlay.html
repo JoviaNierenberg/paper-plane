@@ -31,7 +31,8 @@
       <div ng-show="citationForm.$invalid" ng-show="citationForm.$pristine" class="formError">* fields are required to create citation</div>
     </form>
     <div class="lastCitation" ng-show="citationForm.$submitted">
-      <h3>Created Citation</h3>
+      <h3>Citation copied to clipboard!</h2>
+      <h3>Created Citation:</h3>
       {{lastCitation}}
     </div>
     <form name="clipCitations" ng-submit="copyCitations()" ng-hide="clipCitations.$submitted">
