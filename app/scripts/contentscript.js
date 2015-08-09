@@ -185,7 +185,19 @@ app.controller('MainCtrl', function($scope) {
 
   $scope.copyCitations=function(){
      chrome.storage.local.get('projectName', function(result){
-          console.log('Citations clipped!', result);
+          //at key, loop through array and grab each citation
+          //select all 
+          //copy 
+          $scope.citationsClipped = result['projectName'].map(function(citation){
+            return citation;
+          });
+          $scope.$digest();
+          console.log('all citations', $scope.citationsClipped);
+          // $("body").append("<input type='text' id='temp' style='position:absolute;opacity:0;'>");
+          // $("#temp").val($(citations).text()).select();
+          // document.execCommand("copy");
+          // $("#temp").remove();
+          // console.log('Citations clipped!', result);
       });
   }
 
