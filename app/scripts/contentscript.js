@@ -1,7 +1,7 @@
 'use strict';
 
 var app = angular.module("PaperPlane", []);
-app.controller('MainCtrl', function($scope) {
+app.controller('MainCtrl', function($scope, $sce) {
 
 // getting data into categories
     $scope.range;
@@ -22,8 +22,6 @@ app.controller('MainCtrl', function($scope) {
       $scope.source = source;
       // highlighting
       $(document).on("click", function (v) {
-        // console.log("$scope.source: ", $scope.source)
-        // console.log("fields: ", $scope.sourceCategories[$scope.source])
 
         if ($scope.sourceCategories[$scope.source].length > 0){
           $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
@@ -57,14 +55,27 @@ app.controller('MainCtrl', function($scope) {
     // references common name when setting easybib name
     $scope.highlighted.title = $scope.highlighted["book title"] || $scope.highlighted["magazine title"] || $scope.highlighted["newspaper title"] || $scope.highlighted["journal title"] || $scope.highlighted["website title"];
     if ($scope.highlighted["volume"]) $scope.highlighted.vol = $scope.highlighted["volume"];
+    
     // format date
     var dateJSFormat = moment($scope.highlighted["date published"], ["MM-DD-YYYY", "YYYY-MM-DD", "MM/DD/YYYY", "M/D/YYYY", "MMMM Do YYYY", "MMM D YYYY", "MMMM Do YYYY LT", "MMM D YYYY LT", "dddd, MMMM Do YYYY LT", "ddd, MMM D YYYY LT", "YYYY MMM D", "YYYY MMM DD"]).toDate();
     $scope.highlighted.day = dateJSFormat.getDate();
     $scope.highlighted.month = monthNames[dateJSFormat.getMonth()];
     $scope.highlighted.year = dateJSFormat.getUTCFullYear();
 
-
     // format authors
+    var authorsArr = $scope.highlighted["author(s)"].replace(/[0-9]/g, '').split(", ");
+    var authorsObjArr = [];
+    authorsArr.forEach(function(author){
+      var authorObj = {
+        function: "author",
+        first: author.split(" ")[1].split("")[0],
+        middle: author.split(" ")[1].split("")[1],
+        last: author.split(" ")[0]
+      }
+      authorsObjArr.push(authorObj)
+    })
+    console.log("authorsObjArr", authorsObjArr)
+
     // format pages
     if (citationInfo.pages){
       var pageRange = citationInfo.pages.split("-");
@@ -80,34 +91,23 @@ app.controller('MainCtrl', function($scope) {
       $scope.highlighted.editiontext = $scope.highlighted["edition"];
       $scope.highlighted.year = $scope.highlighted["year published"];
     }
-    else if ($scope.source === "magazine") {
-      pubtype = "pubmagazine";
-      // day
-      // month
-      // year
-
-    }
+    else if ($scope.source === "magazine") pubtype = "pubmagazine";
     else if ($scope.source === "newspaper") {
       pubtype = "pubnewspaper";
       $scope.highlighted.edition = $scope.highlighted["edition (late, etc.)"];
       $scope.highlighted.section = $scope.highlighted["newspaper section"];
       $scope.highlighted.city = $scope.highlighted["city published"];
-      // day
-      // month
-      // year
     }
     else if ($scope.source === "journal") pubtype = "pubjournal";
     else if ($scope.source === "website") {
       pubtype = "pubonline";
       $scope.highlighted.inst = $scope.highlighted["institution"];
-      // day
-      // month
-      // year
       $scope.highlighted['Day_Accessed'] = $scope.dateAccessed.getDate();
       $scope.highlighted['Month_Accessed'] = monthNames[$scope.dateAccessed.getMonth()];
       $scope.highlighted['Year_Accessed'] = $scope.dateAccessed.getUTCFullYear();
     }
 
+    // formats source info
     $scope.sourceInfo = {
       source: $scope.source,
       style: citationInfo.style,
@@ -118,14 +118,7 @@ app.controller('MainCtrl', function($scope) {
         main: pubtype
       },
       [pubtype]: $scope.highlighted,
-      contributors: [
-        {
-          function: "author",
-          first: "Luke",
-          middle: "A",
-          last: "Skywalker"
-        }
-      ]   
+      contributors: authorsObjArr   
     };
 
     console.log('citationInfo', citationInfo);
@@ -139,6 +132,7 @@ app.controller('MainCtrl', function($scope) {
       data: $scope.infoToPut,
       dataType: 'json', // Choosing a JSON datatype
       success: function(data){
+        console.log("data from success: ", data)
         var projectName = citationInfo.projectName;
         //use project name as key
         chrome.runtime.sendMessage({
@@ -163,9 +157,15 @@ app.controller('MainCtrl', function($scope) {
           });
         }
       });
-
     }
-  })
+
+  });
+
+   //get last citation
+    storage.get('projectName', function(result){
+           $scope.lastCitation = result['projectName'][result['projectName'].length-1];
+           $scope.$digest();
+    });
 
 };
 
@@ -175,7 +175,7 @@ app.controller('MainCtrl', function($scope) {
           if(!result['projectName']){return}
 
           $scope.citationsClipped = result['projectName'].map(function(citation){
-            return citation;
+            return $sce.parseAsHtml(citation); //////// this should display the citations we get back from easybib with proper formatting, but doesn't
           });
           $scope.$digest();
           console.log('all citations', $scope.citationsClipped);
