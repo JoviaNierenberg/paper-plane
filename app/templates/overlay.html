@@ -1,5 +1,7 @@
 
  <div id="paperPlane" ng-model="citation" ng-controller="MainCtrl">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
      <link rel=stylesheet type="text/css">
       <div class="title">Paper Plane
         <img class="planeicon" src="http://www.childrenandyouth.co.uk/wp-content/uploads/2014/08/Paper-Aeroplane.png" height="20%" width="20%">
@@ -24,14 +26,24 @@
       </div>
       <input ng-model="citation.pages" placeholder="pages ex. 99-100" ng-hide="citationForm.$invalid">
       </input>
-      <div class="citationBtn">
-      <input type="submit" value="create my citation" ng-hide="citationForm.$invalid" ></input>
+      <div class="citationBtn" ng-hide="citationForm.$invalid">
+        <input type="submit" a class="btn btn-info btn-sm" value="Create My Citation" ></input>
       </div>
       <div ng-show="citationForm.$invalid" ng-show="citationForm.$pristine" class="formError">* fields are required to create citation</div>
     </form>
-    <form name="allCitations" ng-submit="copyCitations()">
-      <div class="citationBtn">
-       <input type="submit" value="Copy Citations to Clipboard"></input>
-      </div>
+    <div class="lastCitation" ng-show="citationForm.$submitted">
+      <h3>Created Citation</h3>
+      {{lastCitation}}
+    </div>
+    <form name="clipCitations" ng-submit="copyCitations()" ng-hide="clipCitations.$submitted">
+     <input type="submit" class="btn btn-info btn-sm" value="Clip All Citations"></input>
     </form>
+    <div class="citationList" ng-show="clipCitations.$submitted">
+      <h3>Citations</h3>
+        <ul>
+          <div ng-repeat="clip in citationsClipped track by $index">
+           <li> {{clip}}</li>
+          </div>
+        </ul>
+    </div>
 </div>
