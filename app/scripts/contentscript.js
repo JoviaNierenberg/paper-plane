@@ -175,7 +175,8 @@ app.controller('MainCtrl', function($scope, $sce) {
           if(!result['projectName']){return}
 
           $scope.citationsClipped = result['projectName'].map(function(citation){
-            return $sce.parseAsHtml(citation); //////// this should display the citations we get back from easybib with proper formatting, but doesn't
+            return citation;
+            // return $sce.parseAsHtml(citation); //////// this should display the citations we get back from easybib with proper formatting, but doesn't
           });
           $scope.$digest();
           console.log('all citations', $scope.citationsClipped);
