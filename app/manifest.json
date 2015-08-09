@@ -48,7 +48,8 @@
         "bower_components/lodash/lodash.min.js",
         "bower_components/angular/angular.min.js",
         "bower_components/moment/min/moment.min.js",
-        "scripts/contentscript.js"
+        "scripts/contentscript.js",
+        "bower_components/zeroclipboard/dist/zeroClipboard.min.js"
       ],
       "html": ["./templates/overlay.html"],
       "run_at": "document_end",

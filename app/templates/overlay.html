@@ -45,4 +45,10 @@
           </div>
         </ul>
     </div>
+    <form name="clearCitationsForm" class="clearCitations" ng-submit="clearCitations()" ng-hide="clearCitationsForm.$submitted">
+       <input type="submit" class="btn btn-info btn-sm" value="Clear All Citations"></input>
+    </form>
+    <div class="clearCitations" ng-show="clearCitationsForm.$submitted">
+      All citations cleared!
+    </div>
 </div>

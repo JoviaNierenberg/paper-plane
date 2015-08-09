@@ -43,25 +43,14 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 
 });
 
-// // listening for an event (one-time request) coming from the POPUP
-// chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-// 	if (request.command === "select-on") {
-// 		highlighting(true);		
-// 	}
-// 	if (request.command === "select-off") {
-// 		highlighting(false);
-// 	}
-// 	if (request.getHighlightStatus) {
-// 		sendResponse({highlighting: localStorage.highlighting});
-// 	}
-// });
-
-// function highlighting(onOrOff) {
-// 	chrome.tabs.query({active: true}, function (tabs) {		
-// 		chrome.tabs.sendMessage(tabs[0].id, {
-// 			highlight: onOrOff
-// 		}, function (response) {
-// 			console.log("response after sending getstuff to contentJS", response);
-// 		});
-// 	});
-// }
+chrome.runtime.onMessage.addListener(function(message) {
+    if (message && message.type == 'copy') {
+        var input = document.createElement('textarea');
+        document.body.appendChild(input);
+        input.value = message.text;
+        input.focus();
+        input.select();
+        document.execCommand('Copy');
+        input.remove();
+    }
+});
