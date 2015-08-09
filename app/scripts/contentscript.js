@@ -178,9 +178,9 @@ app.controller('MainCtrl', function($scope) {
 
   $scope.copyCitations=function(){
      chrome.storage.local.get('projectName', function(result){
-          //at key, loop through array and grab each citation
-          //select all 
-          //copy 
+          //if no citations, short circuit
+          if(!result['projectName']){return}
+
           $scope.citationsClipped = result['projectName'].map(function(citation){
             return citation;
           });
@@ -193,6 +193,13 @@ app.controller('MainCtrl', function($scope) {
           // console.log('Citations clipped!', result);
       });
   }
+
+  $scope.clearCitations=function(){
+    chrome.storage.local.clear(function(){
+      $scope.citationsClipped = [];
+      $scope.$digest();
+    });
+  };
 
 });
 // bootstrapping, opening, and closing overlay
