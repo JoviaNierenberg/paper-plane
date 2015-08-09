@@ -42,13 +42,13 @@
     <form name="clipCitations" ng-submit="copyCitations()" ng-hide="clipCitations.$submitted">
      <input type="submit" class="btn btn-info btn-sm" value="Clip All Citations"></input>
     </form>
-    <div class="citationList" ng-show="clipCitations.$submitted"
+    <div class="citationList" ng-show="clipCitations.$submitted">
       <h3>Citations</h3>
-        <ul>
+        <ol>
           <div ng-repeat="clip in citationsClipped track by $index">
            <li> {{clip}}</li>
           </div>
-        </ul>
+        </ol>
     </div>
     <form name="clearCitationsForm" class="clearCitations" ng-submit="clearCitations()" ng-hide="clearCitationsForm.$submitted">
        <input type="submit" class="btn btn-info btn-sm" value="Clear All Citations"></input>
