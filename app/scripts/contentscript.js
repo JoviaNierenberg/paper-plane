@@ -137,9 +137,7 @@ app.controller('MainCtrl', function($scope) {
       data: $scope.infoToPut,
       dataType: 'json', // Choosing a JSON datatype
       success: function(data){
-        console.log('success', data);
         var projectName = citationInfo.projectName;
-        console.log('projectName', projectName);
         //use project name as key
 
         //if already data in storage then push it in
@@ -147,13 +145,9 @@ app.controller('MainCtrl', function($scope) {
           console.log('result', result);
           if(Object.keys(result).length !== 0){
             var key = Object.keys(result)[0].toString()
-            console.log('key', key);
             var currCitations = result[key];
-            console.log('curr citations', currCitations);
             var updatedCitations = currCitations.concat([data.data]);
-            console.log('updatedCitations', updatedCitations);
             storage.set({'projectName' : updatedCitations }, function(result){
-              console.log('success in storage when already created a citation!', result);
             });
           }else{
           //call function to store data in local storage
@@ -186,11 +180,11 @@ app.controller('MainCtrl', function($scope) {
           });
           $scope.$digest();
           console.log('all citations', $scope.citationsClipped);
-          // $("body").append("<input type='text' id='temp' style='position:absolute;opacity:0;'>");
-          // $("#temp").val($(citations).text()).select();
-          // document.execCommand("copy");
-          // $("#temp").remove();
-          // console.log('Citations clipped!', result);
+          chrome.runtime.sendMessage({
+              type: 'copy',
+              text:  $scope.citationsClipped
+          });
+          console.log('Citations clipped!', result);
       });
   }
 
