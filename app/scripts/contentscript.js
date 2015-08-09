@@ -140,12 +140,14 @@ app.controller('MainCtrl', function($scope) {
         var projectName = citationInfo.projectName;
         //use project name as key
         chrome.runtime.sendMessage({
-              type: 'copy',
+              type: 'copyOne',
               text:  data.data
         });
+
+        $scope.lastCitation = data.data;
+        $scope.$digest();
         //if already data in storage then push it in
         storage.get('projectName', function(result){
-          console.log('result', result);
           if(Object.keys(result).length !== 0){
             var key = Object.keys(result)[0].toString()
             var currCitations = result[key];
@@ -158,17 +160,10 @@ app.controller('MainCtrl', function($scope) {
             console.log('Success in storage! created a new citation!');
           });
         }
-
       });
 
     }
-  });
-
-   //get last citation
-    storage.get('projectName', function(result){
-           $scope.lastCitation = result['projectName'][result['projectName'].length-1];
-           $scope.$digest();
-    });
+  })
 
 };
 
@@ -183,7 +178,7 @@ app.controller('MainCtrl', function($scope) {
           $scope.$digest();
           console.log('all citations', $scope.citationsClipped);
           chrome.runtime.sendMessage({
-              type: 'copy',
+              type: 'copyAll',
               text:  $scope.citationsClipped
           });
           console.log('Citations clipped!', result);
