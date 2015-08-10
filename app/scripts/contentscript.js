@@ -134,6 +134,7 @@ app.controller('MainCtrl', function($scope, $sce) {
       success: function(data){
         console.log("data from success: ", data)
         var projectName = citationInfo.projectName;
+         $scope.lastCitation = data.data;
         //use project name as key
         chrome.runtime.sendMessage({
               type: 'copyOne',
