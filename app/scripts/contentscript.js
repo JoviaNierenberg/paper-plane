@@ -161,12 +161,6 @@ app.controller('MainCtrl', function($scope, $sce) {
 
   });
 
-   //get last citation
-    storage.get('projectName', function(result){
-           $scope.lastCitation = result['projectName'][result['projectName'].length-1];
-           $scope.$digest();
-    });
-
 };
 
   $scope.copyCitations=function(){
@@ -175,6 +169,7 @@ app.controller('MainCtrl', function($scope, $sce) {
           if(!result['projectName']){return}
 
           $scope.citationsClipped = result['projectName'].map(function(citation){
+            // var citationHtml = $sce.trustAsHtml(citation)
             return citation; //////// $sce.parseAsHtml should display the citations we get back from easybib with proper formatting, but doesn't work, so took it out
           });
           $scope.$digest();
