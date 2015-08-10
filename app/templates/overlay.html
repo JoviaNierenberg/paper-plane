@@ -37,7 +37,7 @@
           </span>
       </div>
       <h4>Created Citation:</h4>
-      {{lastCitation}}
+      <div ng-bind-html="lastCitation"> </div>
     </div>
     <form name="clipCitations" ng-submit="copyCitations()" ng-hide="clipCitations.$submitted">
      <input type="submit" class="btn btn-info btn-sm" value="Clip All Citations"></input>
