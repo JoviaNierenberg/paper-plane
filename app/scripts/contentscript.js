@@ -162,12 +162,6 @@ app.controller('MainCtrl', function($scope, $sce) {
 
   });
 
-   //get last citation
-    storage.get('projectName', function(result){
-           $scope.lastCitation = result['projectName'][result['projectName'].length-1];
-           $scope.$digest();
-    });
-
 };
 
   $scope.copyCitations=function(){
