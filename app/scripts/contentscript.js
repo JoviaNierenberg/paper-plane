@@ -141,7 +141,7 @@ app.controller('MainCtrl', function($scope, $sce) {
               text:  data.data
         });
 
-        $scope.lastCitation = $sce.trustAsHtml(data.data);
+        $scope.lastCitation = data.data;
         console.log('$scope.lastCitation', $scope.lastCitation);
         $scope.$digest();
         //if already data in storage then push it in
