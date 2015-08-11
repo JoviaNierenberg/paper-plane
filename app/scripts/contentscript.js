@@ -17,6 +17,17 @@ app.controller('MainCtrl', function($scope, $sce) {
       "magazine": ["article title", "author(s)", "magazine title", "volume", "date published"],// pages needs to include start, end, and non-consecutive
       "newspaper": ["article title", "author(s)", "newspaper title", "edition (late, etc.)", "newspaper section", "city published", "date published"] // pages needs to include start, end, and non-consecutive 
     }
+
+    // show current cat in instructions
+    $scope.current = 0;
+    $scope.setCurrent = function(num){
+      $scope.current = num || 0
+      $scope.$index = num
+    }
+    $scope.isCurrent = function(num){
+      return $scope.current === num
+    }
+
     // set source
     $scope.sourceSelected = function(source){
       $scope.source = source;
