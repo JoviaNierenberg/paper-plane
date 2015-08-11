@@ -22,9 +22,9 @@
         <b>{{key}}:</b> {{value}}
       </div>
       <div ng-hide="sourceCategories[source].length === 0">
-        <p ng-hide="citationForm.$invalid">2.  Highlight the {{sourceCategories[source][0]}} </p> 
+        <p ng-hide="citationForm.$invalid">2.  Highlight the {{sourceCategories[source][0]}}</p>
       </div>
-      <input ng-model="citation.pages" placeholder="pages ex. 99-100" ng-hide="citationForm.$invalid">
+      <i ng-hide="citationForm.$invalid" class="fa fa-arrow-circle-o-left arrow-btn"></i><input size="15" ng-model="citation.pages" placeholder="pages ex. 99-100" ng-hide="citationForm.$invalid"><i ng-hide="citationForm.$invalid" class="fa fa-arrow-circle-o-right arrow-btn"></i>
       </input>
       <div class="citationBtn" ng-hide="citationForm.$invalid">
         <input type="submit" a class="btn btn-info btn-sm" value="Create My Citation" ng-hide="citationForm.$submitted" ></input>

@@ -2,7 +2,6 @@ body {
   padding: 20px;
 }
 
-
 #paperPlane{
    /*background-image: url("http://previews.123rf.com/images/photoauris/photoauris1110/photoauris111000004/11011469-high-resolution-seamless-cork-texture-Stock-Photo-wood.jpg");*/
    background-color: #2F373D;
@@ -55,4 +54,12 @@ body {
 
 .lastCitation{
   margin-bottom: 10px;
+}
+.arrow-btn{
+  display: inline-block;
+  font-size: 3em;
+  margin: 10px;
+}
+.arrow-btn:hover{
+  color: white;
 }
