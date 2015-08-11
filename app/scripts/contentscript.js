@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module("PaperPlane", []);
+var app = angular.module("PaperPlane", ['ngSanitize']);
 app.controller('MainCtrl', function($scope, $sce) {
 
 // getting data into categories
@@ -142,6 +142,7 @@ app.controller('MainCtrl', function($scope, $sce) {
         });
 
         $scope.lastCitation = data.data;
+        console.log('$scope.lastCitation', $scope.lastCitation);
         $scope.$digest();
         //if already data in storage then push it in
         storage.get('projectName', function(result){
