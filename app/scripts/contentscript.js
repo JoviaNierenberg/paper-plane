@@ -24,37 +24,38 @@ app.controller('MainCtrl', function($scope, $sce) {
       $scope.current = num || 0
       $scope.$index = num
     }
-    $scope.isCurrent = function(num){
-      return $scope.current === num
-    }
 
     // set source
     $scope.sourceSelected = function(source){
       $scope.source = source;
       // highlighting
-      $(document).on("click", function (v) {
+      if ($scope.source != undefined){
+        $(document).on("click", function (v) {
 
-        if ($scope.sourceCategories[$scope.source].length > 0){
-          $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
-          $scope.found = false;
+          if ($scope.current < $scope.sourceCategories[$scope.source].length){
+            $scope.elem = document.elementFromPoint(v.clientX, v.clientY);
+            $scope.found = false;
 
-          while ($scope.elem.parentNode) {
-            if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
-            $scope.elem = $scope.elem.parentNode;
+            while ($scope.elem.parentNode) {
+              if ($scope.elem.tagName.toLowerCase() === "a" || $scope.elem.tagName.toLowerCase() === "input" || $scope.elem.tagName.toLowerCase() === "textarea" || $scope.elem.tagName.toLowerCase() === "select") $scope.found = true;
+              $scope.elem = $scope.elem.parentNode;
+            }
+            
+           $scope.range, $scope.selected = window.getSelection();
+           $scope.selectedText = $scope.selected.toString();    
+            if ($scope.selectedText.trim() !== "") {
+              // display correct category
+             $scope.highlighted[$scope.sourceCategories[$scope.source][$scope.current]] = $scope.selectedText;
+             $scope.current++;
+             $scope.$digest();
+            }
           }
-          
-         $scope.range, $scope.selected = window.getSelection();
-         $scope.selectedText = $scope.selected.toString();    
-          if ($scope.selectedText.trim() !== "") {
-            // display correct category
-           $scope.highlighted[$scope.sourceCategories[$scope.source].shift()] = $scope.selectedText;
-           $scope.$digest();
-          }
-        }
-      });
+        });
+      }
     } 
+
     
-  // $scope.highlighted.title = document.title;
+  // set url and date accessed
 	$scope.highlighted.url = document.location.href;
   $scope.dateAccessed = new Date();
   var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -74,18 +75,20 @@ app.controller('MainCtrl', function($scope, $sce) {
     $scope.highlighted.year = dateJSFormat.getUTCFullYear();
 
     // format authors
-    var authorsArr = $scope.highlighted["author(s)"].replace(/[0-9]/g, '').split(", ");
-    var authorsObjArr = [];
-    authorsArr.forEach(function(author){
-      var authorObj = {
-        function: "author",
-        first: author.split(" ")[1].split("")[0],
-        middle: author.split(" ")[1].split("")[1],
-        last: author.split(" ")[0]
-      }
-      authorsObjArr.push(authorObj)
-    })
-    console.log("authorsObjArr", authorsObjArr)
+    if ($scope.highlighted["author(s)"] != undefined) {
+      var authorsArr = $scope.highlighted["author(s)"].replace(/[0-9]/g, '').split(", ");
+      var authorsObjArr = [];
+      authorsArr.forEach(function(author){
+        var authorObj = {
+          function: "author",
+          first: author.split(" ")[1].split("")[0],
+          middle: author.split(" ")[1].split("")[1],
+          last: author.split(" ")[0]
+        }
+        authorsObjArr.push(authorObj)
+      })
+      console.log("authorsObjArr", authorsObjArr)
+    }
 
     // format pages
     if (citationInfo.pages){
@@ -97,8 +100,10 @@ app.controller('MainCtrl', function($scope, $sce) {
     var pubtype;
     if ($scope.source === "book" || $scope.source === "chapter") {
       pubtype = "pubnonperiodical";   
-      $scope.highlighted.city = $scope.highlighted["city, state"].split(", ")[0];
-      $scope.highlighted.state = $scope.highlighted["city, state"].split(", ")[1];    
+      if ($scope.highlighted["city, state"] != undefined){
+        $scope.highlighted.city = $scope.highlighted["city, state"].split(", ")[0];
+        $scope.highlighted.state = $scope.highlighted["city, state"].split(", ")[1];    
+      }
       $scope.highlighted.editiontext = $scope.highlighted["edition"];
       $scope.highlighted.year = $scope.highlighted["year published"];
     }

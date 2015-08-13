@@ -21,16 +21,9 @@
       <div class="displayHighlight"ng-repeat="(key, value) in highlighted" ng-hide="citationForm.$invalid">
         <b>{{key}}:</b> {{value}}
       </div>
-
-      <div ng-hide="sourceCategories[source].length === 0">
-        <p ng-hide="citationForm.$invalid">2.  Highlight the {{sourceCategories[source][0]}}</p>
-      </div>
-
-      <!-- new -->
       <div ng-repeat="category in sourceCategories[source]" ng-show="current === $index">
         <p ng-hide="citationForm.$invalid">2. Highlight the {{category}}</p>
       </div>
-
       <i ng-hide="citationForm.$invalid" class="fa fa-arrow-circle-o-left arrow-btn" ng-click="setCurrent($index-1)"></i><input size="15" ng-model="citation.pages" placeholder="pages ex. 99-100" ng-hide="citationForm.$invalid"><i ng-hide="citationForm.$invalid" class="fa fa-arrow-circle-o-right arrow-btn" ng-click="setCurrent($index+1)"></i>
       </input>
       <div class="citationBtn" ng-hide="citationForm.$invalid">
