@@ -19,10 +19,13 @@ app.controller('MainCtrl', function($scope, $sce) {
     }
 
     // show current cat in instructions
-    $scope.current = 0;
+    $scope.current = $scope.$index || 0;
     $scope.setCurrent = function(num){
-      $scope.current = num || 0
-      $scope.$index = num
+      $scope.current = num || 0;
+      $scope.$index = num;
+      // console.log("IN SET CURRENT FUNCTION")
+      // console.log("current: ", $scope.current)
+      // console.log("$sindex: ", $scope.$index)
     }
 
     // set source
@@ -41,13 +44,18 @@ app.controller('MainCtrl', function($scope, $sce) {
               $scope.elem = $scope.elem.parentNode;
             }
             
-           $scope.range, $scope.selected = window.getSelection();
-           $scope.selectedText = $scope.selected.toString();    
+            $scope.range, $scope.selected = window.getSelection();
+            $scope.selectedText = $scope.selected.toString();    
             if ($scope.selectedText.trim() !== "") {
               // display correct category
-             $scope.highlighted[$scope.sourceCategories[$scope.source][$scope.current]] = $scope.selectedText;
-             $scope.current++;
-             $scope.$digest();
+              $scope.highlighted[$scope.sourceCategories[$scope.source][$scope.current]] = $scope.selectedText;
+              $scope.$index = $scope.current
+              // console.log("IN HIGHLIGHTING FUNCTION")
+              // console.log("current before ++: ", $scope.current)
+              // console.log("$index: ", $scope.$index)
+              $scope.current++;
+              // console.log("current after ++: ", $scope.current)
+              $scope.$digest();
             }
           }
         });
